@@ -1,0 +1,2080 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E+ Wallet — Campanhas de Incentivo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            overflow: hidden;
+            height: 100vh;
+            background: #E8E8E3;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Montserrat', 'Inter', sans-serif;
+        }
+
+        .presentation-container {
+            display: flex;
+            height: 100vh;
+            transition: transform 0.65s cubic-bezier(0.4, 0, 0.2, 1);
+            will-change: transform;
+        }
+
+        /* ─── SLIDE BASE ─── */
+        .slide {
+            min-width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 70px 80px 90px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .slide-light {
+            background: #F5F5F0;
+            color: #1d1d1f;
+        }
+
+        .slide-dark {
+            background: #1E1E1E;
+            color: #f5f5f0;
+        }
+
+        /* ─── FADE-IN ANIMATIONS ─── */
+        .fade-el {
+            opacity: 0;
+            transform: translateY(28px);
+            transition: opacity 0.75s ease-out, transform 0.75s ease-out;
+        }
+
+        .fade-el.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Manual sequential elements — hidden until .animate-in */
+        .seq-el {
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .seq-el.animate-in {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ─── TYPOGRAPHY ─── */
+        .slide-dark h1 {
+            font-size: clamp(38px, 5vw, 64px);
+            font-weight: 900;
+            line-height: 1.1;
+            text-align: center;
+            background: linear-gradient(135deg, #ffffff 0%, #d4d4d4 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .slide-light h1 {
+            font-size: clamp(38px, 5vw, 64px);
+            font-weight: 900;
+            line-height: 1.1;
+            text-align: center;
+            background: linear-gradient(135deg, #1d1d1f 0%, #515154 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .slide-dark h2 {
+            font-size: clamp(22px, 3vw, 36px);
+            font-weight: 700;
+            text-align: center;
+            color: #f0f0ec;
+            margin-bottom: 8px;
+        }
+
+        .slide-light h2 {
+            font-size: clamp(22px, 3vw, 36px);
+            font-weight: 700;
+            text-align: center;
+            color: #1d1d1f;
+            margin-bottom: 8px;
+        }
+
+        .slide-dark h3 {
+            font-size: clamp(16px, 2vw, 22px);
+            font-weight: 500;
+            text-align: center;
+            color: #8e8e93;
+        }
+
+        .slide-light h3 {
+            font-size: clamp(16px, 2vw, 22px);
+            font-weight: 500;
+            text-align: center;
+            color: #6e6e73;
+        }
+
+        /* ─── PILLS ─── */
+        .pill {
+            display: inline-block;
+            padding: 10px 24px;
+            border-radius: 50px;
+            font-size: 15px;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+        }
+
+        .pill-amber {
+            background: linear-gradient(135deg, #F9D423 0%, #FFD700 100%);
+            color: #1a1a00;
+        }
+
+        .card-red {
+            border-left: 4px solid #ef4444;
+        }
+
+        /* ─── STAT BOXES ─── */
+        .stat-box {
+            background: rgba(255,255,255,0.07);
+            border: 1px solid rgba(255,255,255,0.12);
+            padding: 36px 32px;
+            border-radius: 24px;
+            text-align: center;
+            min-width: 220px;
+            backdrop-filter: blur(8px);
+            transition: transform 0.3s ease;
+        }
+
+        .stat-box:hover {
+            transform: translateY(-4px);
+            background: rgba(255,255,255,0.1);
+        }
+
+        .slide-light .stat-box {
+            background: #ffffff;
+            border: 1px solid rgba(29,29,31,0.1);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.07);
+            backdrop-filter: none;
+        }
+
+        .slide-light .stat-box:hover {
+            background: #ffffff;
+            box-shadow: 0 12px 32px rgba(0,0,0,0.1);
+        }
+
+        .slide-light .stat-label {
+            color: #6e6e73;
+        }
+
+        .stat-number {
+            font-size: clamp(36px, 4.5vw, 54px);
+            font-weight: 900;
+            margin-bottom: 8px;
+            line-height: 1;
+        }
+
+        .stat-label {
+            font-size: 15px;
+            color: #8e8e93;
+            font-weight: 500;
+        }
+
+        .step-title {
+            font-size: 17px;
+            font-weight: 700;
+            color: #1d1d1f;
+            margin-bottom: 8px;
+        }
+
+        .step-desc {
+            font-size: 14px;
+            color: #6e6e73;
+            line-height: 1.5;
+        }
+
+        /* ─── STEP SHOWCASE — large image per step ─── */
+        .step-showcase-slide {
+            gap: 10px;
+        }
+
+        .step-showcase {
+            position: relative;
+            width: 100%;
+            max-width: 1100px;
+            flex: 1;
+            min-height: 0;
+            height: 440px;
+        }
+
+        .step-panel {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            gap: 50px;
+        }
+
+        .step-panel.seq-el {
+            opacity: 0;
+            transform: translateY(28px);
+            transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1), transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+            pointer-events: none;
+        }
+
+        .step-panel.seq-el.animate-in {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+            z-index: 2;
+        }
+
+        .step-panel.seq-el.animate-out {
+            opacity: 0;
+            transform: translateY(-18px);
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .step-img-large {
+            flex: 0 0 54%;
+            max-width: 54%;
+            height: 100%;
+            max-height: 420px;
+            object-fit: cover;
+            border-radius: 20px;
+            box-shadow: 0 20px 48px rgba(0,0,0,0.13);
+        }
+
+        .step-content-panel {
+            flex: 1;
+            text-align: left;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .step-passo-badge {
+            display: inline-block;
+            padding: 6px 16px;
+            border-radius: 50px;
+            font-size: 12px;
+            font-weight: 700;
+            background: rgba(249, 212, 35, 0.12);
+            color: #B8860B;
+            border: 1px solid rgba(249, 212, 35, 0.35);
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            width: fit-content;
+        }
+
+        .step-showcase-icon {
+            width: 58px;
+            height: 58px;
+            background: linear-gradient(135deg, #F9D423 0%, #FFD700 100%);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 26px;
+            box-shadow: 0 10px 24px rgba(249, 212, 35, 0.3);
+        }
+
+        .step-content-panel .step-title {
+            font-size: clamp(24px, 3vw, 36px);
+            font-weight: 800;
+            color: #1d1d1f;
+            line-height: 1.2;
+            margin: 0;
+        }
+
+        .step-content-panel .step-desc {
+            font-size: 16px;
+            color: #6e6e73;
+            line-height: 1.65;
+            margin: 0;
+        }
+
+        .step-progress {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 4px;
+        }
+
+        .step-progress-dot {
+            height: 7px;
+            border-radius: 4px;
+            background: #d1d5db;
+            transition: all 0.3s ease;
+        }
+
+        .step-progress-dot.active {
+            background: #F9D423;
+            width: 22px !important;
+        }
+
+        .step-hint {
+            font-size: 12px;
+            color: #9ca3af;
+            margin-left: 10px;
+            letter-spacing: 0.3px;
+        }
+
+        /* ─── WALLET BADGE GRID ─── */
+        .badge-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 14px;
+            max-width: 400px;
+        }
+
+        .badge-item {
+            background: rgba(29,29,31,0.05);
+            border: 1px solid rgba(29,29,31,0.1);
+            border-radius: 14px;
+            padding: 16px 10px;
+            text-align: center;
+            font-size: 13px;
+            font-weight: 600;
+            color: #1d1d1f;
+            transition: background 0.2s ease;
+        }
+
+        .badge-item:hover {
+            background: rgba(249, 212, 35, 0.15);
+            border-color: rgba(249, 212, 35, 0.4);
+        }
+
+        .badge-item .b-icon {
+            font-size: 24px;
+            display: block;
+            margin-bottom: 6px;
+        }
+
+        /* ─── DASHBOARD CHECK LIST ─── */
+        .check-list {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            max-width: 600px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        .check-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            background: white;
+            border-radius: 14px;
+            padding: 16px 20px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.06);
+            font-size: 15px;
+            font-weight: 500;
+            color: #1d1d1f;
+        }
+
+        .check-dot {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #F9D423 0%, #FFD700 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            flex-shrink: 0;
+            box-shadow: 0 4px 12px rgba(249,212,35,0.3);
+        }
+
+        /* ─── CTA CARDS ─── */
+        .cta-grid {
+            display: flex;
+            gap: 28px;
+            justify-content: center;
+            max-width: 860px;
+            width: 100%;
+        }
+
+        .cta-card-primary {
+            flex: 1;
+            background: linear-gradient(135deg, rgba(255,210,0,0.18) 0%, rgba(217,119,6,0.12) 100%);
+            border: 2px solid rgba(255,210,0,0.5);
+            border-radius: 24px;
+            padding: 36px 28px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .cta-card-primary:hover {
+            border-color: rgba(255,210,0,0.8);
+            background: rgba(255,210,0,0.22);
+            transform: translateY(-4px);
+        }
+
+        .cta-card-outline {
+            flex: 1;
+            background: #ffffff;
+            border: 2px solid rgba(29,29,31,0.12);
+            border-radius: 24px;
+            padding: 36px 28px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .cta-card-outline:hover {
+            border-color: rgba(29,29,31,0.22);
+            background: #ffffff;
+            transform: translateY(-4px);
+            box-shadow: 0 12px 32px rgba(0,0,0,0.08);
+        }
+
+        .cta-card-icon {
+            font-size: 44px;
+            margin-bottom: 14px;
+        }
+
+        .cta-card-title {
+            font-size: 20px;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .cta-card-desc {
+            font-size: 14px;
+            color: #8e8e93;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .cta-btn {
+            display: inline-block;
+            padding: 13px 28px;
+            border-radius: 50px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            border: none;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .cta-btn-amber {
+            background: linear-gradient(135deg, #F9D423 0%, #FFD700 100%);
+            color: #1a1a00;
+            box-shadow: 0 12px 32px rgba(249,212,35,0.35);
+        }
+
+        .cta-btn-amber:hover {
+            transform: scale(1.05);
+            box-shadow: 0 16px 40px rgba(249,212,35,0.5);
+        }
+
+        .cta-email {
+            font-size: 15px;
+            color: #B8860B;
+            font-weight: 600;
+            letter-spacing: 0.2px;
+        }
+
+        .cta-contact-name {
+            font-size: 14px;
+            color: #1d1d1f;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        /* ─── COVER LAYOUT ─── */
+        .cover-layout {
+            display: flex;
+            align-items: center;
+            gap: 60px;
+            max-width: 1100px;
+            width: 100%;
+        }
+
+        .cover-text {
+            flex: 1;
+            text-align: left;
+        }
+
+        .cover-text h1 {
+            text-align: left;
+            font-size: clamp(34px, 4.5vw, 58px);
+            margin-bottom: 12px;
+        }
+
+        .cover-small-note {
+            text-align: left;
+            font-size: clamp(14px, 1.6vw, 18px);
+            color: #8e8e93;
+            font-weight: 500;
+            margin-bottom: 16px;
+        }
+
+        .cover-highlight-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 11px 20px;
+            border-radius: 999px;
+            background: linear-gradient(135deg, #F9D423 0%, #FFD700 100%);
+            border: 1px solid rgba(249,212,35,0.65);
+            color: #1a1a00;
+            font-size: clamp(14px, 1.6vw, 18px);
+            font-weight: 800;
+            letter-spacing: 0.2px;
+            margin-bottom: 20px;
+            box-shadow: 0 12px 30px rgba(249,212,35,0.34);
+        }
+
+        .cover-img-wrap {
+            flex-shrink: 0;
+            width: 340px;
+        }
+
+        .cover-img {
+            width: 100%;
+            object-fit: contain;
+            filter: drop-shadow(0 24px 48px rgba(0,0,0,0.6));
+        }
+
+        .logo-img {
+            height: 38px;
+            object-fit: contain;
+            margin-bottom: 32px;
+        }
+
+        /* ─── WALLET SLIDE LAYOUT ─── */
+        .wallet-layout {
+            display: flex;
+            align-items: center;
+            gap: 44px;
+            max-width: 1100px;
+            width: 100%;
+        }
+
+        .wallet-img-wrap {
+            flex-shrink: 0;
+            width: min(52vw, 560px);
+        }
+
+        .wallet-img {
+            width: 100%;
+            border-radius: 20px;
+            box-shadow: 0 24px 60px rgba(0,0,0,0.5);
+        }
+
+        .wallet-content {
+            flex: 1;
+            max-width: 560px;
+        }
+
+        /* ─── DASHBOARD SLIDE LAYOUT ─── */
+        .dash-img {
+            width: 100%;
+            max-width: 100%;
+            border-radius: 16px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+            margin: 0;
+            display: block;
+            max-height: 360px;
+            object-fit: cover;
+            background: white;
+        }
+
+        #slide-5 {
+            justify-content: center;
+            align-items: center;
+            padding: 82px 72px 128px;
+            gap: 14px;
+        }
+
+        .dash-layout {
+            width: 100%;
+            max-width: 1120px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .dash-head {
+            width: 100%;
+            max-width: 760px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            text-align: center;
+        }
+
+        .dash-head h2,
+        .dash-head h3 {
+            margin: 0;
+        }
+
+        .dash-content {
+            width: 100%;
+            max-width: 1080px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr);
+            gap: 20px;
+            align-items: center;
+        }
+
+        #slide-5 .check-list {
+            max-width: 100%;
+            margin: 0 auto;
+            gap: 12px;
+        }
+
+        #slide-5 .check-item {
+            padding: 14px 16px;
+            min-height: 62px;
+        }
+
+        #slide-5 .check-dot {
+            width: 28px;
+            height: 28px;
+            font-size: 14px;
+        }
+
+        /* ─── MARKET STATS SLIDE ─── */
+        .market-slide {
+            padding: 78px 68px 118px;
+            justify-content: flex-start;
+            align-items: stretch;
+            gap: 16px;
+        }
+
+        .market-head {
+            width: 100%;
+            max-width: 860px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .market-head h2,
+        .market-head h3 {
+            margin: 0;
+        }
+
+        .market-head h3 {
+            margin-top: 8px;
+            margin-bottom: 6px;
+        }
+
+        .market-grid {
+            width: 100%;
+            max-width: 1120px;
+            margin: 18px auto 0;
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 18px;
+        }
+
+        .market-card {
+            background: #ffffff;
+            border: 1px solid rgba(29, 29, 31, 0.08);
+            border-top: 4px solid #22c55e;
+            border-radius: 20px;
+            padding: 22px 20px;
+            box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
+            display: flex;
+            flex-direction: column;
+            min-height: 320px;
+            gap: 12px;
+        }
+
+        .market-kicker {
+            display: inline-flex;
+            align-items: center;
+            width: fit-content;
+            padding: 7px 14px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.6px;
+            text-transform: uppercase;
+            background: rgba(6, 182, 212, 0.12);
+            color: #0891b2;
+        }
+
+        .market-number {
+            font-size: clamp(40px, 4.6vw, 58px);
+            line-height: 1;
+            font-weight: 900;
+            color: #16a34a;
+            letter-spacing: -0.8px;
+        }
+
+        .market-title {
+            font-size: 17px;
+            font-weight: 700;
+            color: #1d1d1f;
+            line-height: 1.35;
+            min-height: 70px;
+        }
+
+        .market-meter {
+            width: 100%;
+            height: 8px;
+            border-radius: 999px;
+            background: rgba(15, 23, 42, 0.1);
+            overflow: hidden;
+        }
+
+        .market-meter-fill {
+            width: 0;
+            height: 100%;
+            border-radius: inherit;
+            background: linear-gradient(90deg, #22c55e 0%, #16a34a 100%);
+            transition: width 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .market-card.animate-in .market-meter-fill {
+            width: var(--market-fill);
+        }
+
+        .market-insight {
+            font-size: 14px;
+            color: #334155;
+            line-height: 1.55;
+            margin-top: 2px;
+        }
+
+        .market-source {
+            margin-top: auto;
+            padding-top: 10px;
+            border-top: 1px solid rgba(6, 182, 212, 0.18);
+            font-size: 12px;
+            color: #0f766e;
+            font-weight: 600;
+            line-height: 1.45;
+        }
+
+        .market-hint {
+            margin: 12px auto 0;
+            font-size: 12px;
+            color: #64748b;
+            letter-spacing: 0.2px;
+            text-align: center;
+        }
+
+        /* ─── PROOF SLIDE LAYOUT ─── */
+        #slide-6 {
+            padding: 0 50px 146px;
+            align-items: center;
+            justify-content: flex-end;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .proof-people-img {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            opacity: 0.9;
+            pointer-events: none;
+        }
+
+        .proof-gradient {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(
+                to right,
+                rgba(245,245,240,0) 0%,
+                rgba(245,245,240,0.4) 42%,
+                rgba(245,245,240,0.80) 64%,
+                rgba(245,245,240,0.93) 82%,
+                rgba(245,245,240,0.97) 100%
+            );
+            pointer-events: none;
+        }
+
+        .proof-content {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            text-align: right;
+            max-width: 760px;
+            margin-left: auto;
+            width: min(1120px, 100%);
+            padding: 106px 5% 210px 0;
+            gap: 0;
+        }
+
+        .proof-stats {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 14px;
+            width: min(740px, 100%);
+        }
+
+        .proof-stats .stat-box {
+            min-width: 0;
+            padding: 24px 18px;
+            border-radius: 20px;
+        }
+
+        .proof-stats .stat-number {
+            font-size: clamp(34px, 3.9vw, 58px);
+        }
+
+        .proof-car-strip {
+            position: absolute;
+            left: 50%;
+            bottom: 90px;
+            transform: translateX(-50%);
+            width: min(1560px, calc(100vw - 78px));
+            z-index: 3;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            padding: 14px 16px;
+            border-radius: 20px;
+            border: 1px solid rgba(29,29,31,0.1);
+            background: rgba(245,245,240,0.88);
+            backdrop-filter: blur(10px);
+        }
+
+        .proof-car-row {
+            overflow: hidden;
+            width: 100%;
+        }
+
+        .proof-car-track {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            width: max-content;
+            will-change: transform;
+        }
+
+        .proof-car-fwd {
+            animation: proofMarqueeFwd 30s linear infinite;
+        }
+
+        .proof-car-rev {
+            animation: proofMarqueeRev 30s linear infinite;
+        }
+
+        .proof-car-strip:hover .proof-car-track {
+            animation-play-state: paused;
+        }
+
+        .proof-car-logo {
+            width: 156px;
+            height: 78px;
+            flex-shrink: 0;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 12px;
+            border-radius: 14px;
+            border: 1px solid rgba(255,255,255,0.2);
+            background: linear-gradient(180deg, rgba(255,255,255,0.97), rgba(247,247,242,0.95));
+            box-shadow: 0 6px 18px rgba(0,0,0,0.2);
+            transition: transform 0.25s cubic-bezier(0.16,1,0.3,1), box-shadow 0.25s ease;
+        }
+
+        .proof-car-logo:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 26px rgba(0,0,0,0.2);
+        }
+
+        .proof-car-logo img {
+            height: 40px;
+            max-width: 118px;
+            width: auto;
+            object-fit: contain;
+        }
+
+        /* ─── SLIDE DOTS ─── */
+        .slide-indicator {
+            position: fixed;
+            bottom: 28px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 8px;
+            z-index: 100;
+            background: rgba(0,0,0,0.2);
+            backdrop-filter: blur(8px);
+            padding: 8px 14px;
+            border-radius: 20px;
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.3);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .dot.active {
+            width: 28px;
+            border-radius: 4px;
+            background: linear-gradient(90deg, #F9D423 0%, #FFD700 100%);
+        }
+
+        /* ─── PROBLEM / PROPOSAL CARD GRIDS ─── */
+        .tri-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 22px;
+            max-width: 1050px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        .tri-card {
+            border-radius: 20px;
+            padding: 28px 22px;
+        }
+
+        .tri-card-light {
+            background: white;
+            box-shadow: 0 14px 36px rgba(0,0,0,0.07);
+        }
+
+        .tri-num {
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+
+        .tri-title {
+            font-size: 18px;
+            font-weight: 800;
+            margin-bottom: 10px;
+            line-height: 1.3;
+        }
+
+        .tri-desc {
+            font-size: 14px;
+            line-height: 1.6;
+            color: #6e6e73;
+        }
+
+        /* ─── ANIMATIONS ─── */
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50%       { transform: translateY(-8px); }
+        }
+
+        @keyframes proofMarqueeFwd {
+            from { transform: translateX(0); }
+            to   { transform: translateX(-50%); }
+        }
+
+        @keyframes proofMarqueeRev {
+            from { transform: translateX(-50%); }
+            to   { transform: translateX(0); }
+        }
+
+        @keyframes amberpulse {
+            0%, 100% { box-shadow: 0 12px 32px rgba(249,212,35,0.35); }
+            50%       { box-shadow: 0 16px 48px rgba(249,212,35,0.55); }
+        }
+
+        .float-anim { animation: float 4s ease-in-out infinite; }
+        .pulse-anim { animation: amberpulse 3s ease-in-out infinite; }
+
+        /* ─── AVATAR STRIP (cover) ─── */
+        .avatar-strip {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 24px;
+        }
+
+        .avatar-cluster {
+            display: flex;
+        }
+
+        .avatar-circle {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 700;
+            color: white;
+            border: 2px solid #F5F5F0;
+            margin-left: -8px;
+        }
+
+        .avatar-cluster .avatar-circle:first-child { margin-left: 0; }
+
+        .avatar-strip-label {
+            font-size: 13px;
+            color: #6e6e73;
+            font-weight: 500;
+            margin-left: 4px;
+        }
+
+        /* ─── PROBLEM MICRO-QUOTE ─── */
+        .micro-quote {
+            font-size: 15px;
+            font-style: italic;
+            color: #8e8e93;
+            text-align: center;
+            margin-bottom: 28px;
+            padding: 12px 24px;
+            background: rgba(239,68,68,0.06);
+            border-radius: 50px;
+            border: 1px solid rgba(239,68,68,0.15);
+        }
+
+        .tri-card-icon {
+            font-size: 22px;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        /* ─── HUMAN HIGHLIGHT CARD ─── */
+        .card-human-highlight {
+            background: rgba(249,212,35,0.06) !important;
+            box-shadow: 0 0 0 1px rgba(249,212,35,0.3), 0 14px 40px rgba(249,212,35,0.1) !important;
+        }
+
+        .card-pull-quote {
+            font-size: 13px;
+            font-style: italic;
+            color: #B8860B;
+            margin-top: 14px;
+            border-top: 1px solid rgba(249,212,35,0.35);
+            padding-top: 12px;
+            line-height: 1.5;
+        }
+
+        /* ─── CINEMATIC HUMAN MOMENT SLIDE ─── */
+        .human-bg-img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            filter: brightness(0.82) saturate(1.1);
+            pointer-events: none;
+        }
+
+        .human-bg-gradient {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(
+                to right,
+                rgba(245,245,240,0) 0%,
+                rgba(245,245,240,0.45) 42%,
+                rgba(245,245,240,0.85) 65%,
+                rgba(245,245,240,0.96) 82%,
+                rgba(245,245,240,0.99) 100%
+            );
+            pointer-events: none;
+        }
+
+        .human-quote-overlay {
+            position: relative;
+            z-index: 2;
+            max-width: 620px;
+            text-align: left;
+            margin-left: auto;
+            margin-right: clamp(28px, 7vw, 120px);
+            padding: 28px 34px 24px;
+            border-radius: 22px;
+            background: rgba(255,255,255,0.72);
+            border: 1px solid rgba(29,29,31,0.08);
+            backdrop-filter: blur(12px);
+            box-shadow: 0 20px 48px rgba(0,0,0,0.08);
+        }
+
+        .human-quote-text {
+            font-size: clamp(34px, 4.2vw, 64px);
+            font-weight: 800;
+            line-height: 1.15;
+            color: #1d1d1f;
+            margin: 0;
+        }
+
+        .human-accent {
+            width: 48px;
+            height: 4px;
+            background: linear-gradient(90deg, #F9D423, #FFD700);
+            border-radius: 2px;
+            margin: 20px 0;
+        }
+
+        .human-quote-sub {
+            font-size: 16px;
+            color: #8e8e93;
+            line-height: 1.6;
+            margin-top: 16px;
+        }
+
+        /* ─── EMPLOYEE QUOTE (wallet) ─── */
+        .employee-quote {
+            background: rgba(249,212,35,0.08);
+            border-left: 3px solid #F9D423;
+            border-radius: 0 12px 12px 0;
+            padding: 14px 18px;
+            margin-top: 18px;
+        }
+
+        .employee-quote-text {
+            font-size: 14px;
+            font-style: italic;
+            color: #6e6e73;
+            line-height: 1.55;
+        }
+
+        .employee-quote-attr {
+            font-size: 12px;
+            color: #9ca3af;
+            margin-top: 8px;
+        }
+
+        /* ─── RESPONSIVE — DESKTOP MÉDIO ─── */
+        @media (max-width: 900px) {
+            .tri-grid { grid-template-columns: 1fr; gap: 14px; }
+            .cover-layout { flex-direction: column; gap: 30px; }
+            .cover-img-wrap { width: 220px; }
+            .cover-highlight-btn { width: fit-content; }
+            .wallet-layout { flex-direction: column; gap: 30px; }
+            .wallet-img-wrap { width: min(92vw, 380px); }
+            .wallet-content { max-width: 100%; }
+            .cta-grid { flex-direction: column; }
+            .market-grid {
+                grid-template-columns: 1fr;
+                gap: 14px;
+                margin-top: 14px;
+            }
+            .market-card { min-height: auto; gap: 10px; }
+            .market-title { min-height: 0; }
+            .dash-content { grid-template-columns: 1fr; gap: 14px; }
+            .dash-img { max-height: 300px; }
+            .proof-content {
+                max-width: 100%;
+                text-align: center;
+                align-items: center;
+            }
+            .proof-content h2,
+            .proof-content h3 { text-align: center !important; }
+            .proof-stats {
+                width: 100%;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+            .proof-car-logo { width: 130px; height: 68px; border-radius: 12px; }
+            .proof-car-logo img { height: 34px; max-width: 95px; }
+            .human-quote-overlay {
+                max-width: min(94vw, 640px);
+                margin-right: 0;
+                margin-left: auto;
+                padding: 20px 20px 18px;
+            }
+            .human-quote-text { font-size: clamp(30px, 7.4vw, 52px); line-height: 1.12; }
+        }
+
+        /* ─── MOBILE — PÁGINA ÚNICA SCROLLÁVEL ─── */
+        @media (max-width: 768px) {
+
+            /* Body e html: scroll normal */
+            html, body {
+                overflow: auto !important;
+                overflow-x: hidden !important;
+                height: auto !important;
+            }
+
+            /* Container: fluxo de coluna sem altura travada */
+            .presentation-container {
+                flex-direction: column !important;
+                height: auto !important;
+                transform: none !important;
+                transition: none !important;
+                will-change: auto !important;
+            }
+
+            /* Slides: altura automática, sem clips */
+            .slide {
+                min-width: 100vw;
+                width: 100vw;
+                height: auto !important;
+                min-height: 0 !important;
+                padding: 52px 22px 44px;
+                overflow: visible !important;
+            }
+
+            /* Ocultar pontos de navegação */
+            .slide-indicator { display: none !important; }
+
+            /* Revelar todo conteúdo animado imediatamente */
+            .fade-el {
+                opacity: 1 !important;
+                transform: none !important;
+                transition: none !important;
+            }
+            .seq-el {
+                opacity: 1 !important;
+                transform: none !important;
+                transition: none !important;
+                pointer-events: auto !important;
+            }
+            .seq-el.animate-out {
+                opacity: 1 !important;
+                transform: none !important;
+            }
+
+            /* ── Tipografia ── */
+            h1 { font-size: clamp(24px, 7vw, 36px) !important; }
+            h2 { font-size: clamp(17px, 5vw, 24px) !important; }
+            h3 { font-size: clamp(13px, 3.5vw, 16px) !important; }
+            .stat-number { font-size: clamp(26px, 7.5vw, 38px) !important; }
+            .market-number { font-size: clamp(28px, 8vw, 40px) !important; }
+
+            /* ── Cover ── */
+            .cover-layout { flex-direction: column; gap: 20px; align-items: center; }
+            .cover-text { text-align: center; }
+            .cover-text h1 { text-align: center; }
+            .cover-img-wrap { width: min(52vw, 200px); }
+            .cover-small-note { text-align: center; }
+            .avatar-strip { justify-content: center; }
+            .logo-img { height: 28px; margin-bottom: 18px; }
+
+            /* ── Cards de problema/proposta ── */
+            .tri-grid { grid-template-columns: 1fr; gap: 10px; }
+            .tri-card { padding: 18px 16px; }
+
+            /* ── Step-showcase: empilhar os 3 passos em sequência ── */
+            .step-showcase-slide { gap: 8px; }
+            .step-showcase {
+                position: static !important;
+                height: auto !important;
+                display: flex;
+                flex-direction: column;
+                gap: 20px;
+                width: 100%;
+            }
+            .step-panel {
+                position: static !important;
+                inset: auto !important;
+                flex-direction: column;
+                gap: 14px;
+                opacity: 1 !important;
+                transform: none !important;
+                pointer-events: auto !important;
+            }
+            .step-img-large {
+                flex: none;
+                max-width: 100%;
+                width: 100%;
+                height: 170px;
+                max-height: 170px;
+                object-fit: cover;
+                border-radius: 16px;
+            }
+            .step-content-panel { text-align: center; gap: 8px; }
+            .step-passo-badge { margin: 0 auto; }
+            .step-content-panel .step-title { font-size: clamp(17px, 5vw, 24px); }
+            .step-content-panel .step-desc { font-size: 13px; }
+            .step-hint { display: none; }
+            .step-progress { justify-content: center; }
+
+            /* ── Wallet ── */
+            .wallet-layout { flex-direction: column; gap: 18px; align-items: center; }
+            .wallet-img-wrap { width: min(78vw, 280px); }
+            .wallet-content { max-width: 100%; text-align: center; }
+            .wallet-content h2 { text-align: center !important; }
+            .badge-grid { max-width: 100%; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+            .badge-item { padding: 12px 6px; font-size: 11px; }
+            .badge-item .b-icon { font-size: 18px; }
+
+            /* ── Dashboard ── */
+            #slide-5 { padding: 52px 22px 44px !important; }
+            .dash-layout { gap: 14px; }
+            .dash-content { grid-template-columns: 1fr; gap: 14px; }
+            .dash-img { max-height: 210px; }
+            #slide-5 .check-list { gap: 9px; }
+            #slide-5 .check-item { padding: 11px 14px; font-size: 13px; min-height: 0; }
+
+            /* ── Market ── */
+            .market-slide { padding: 52px 22px 44px !important; justify-content: flex-start; align-items: stretch; }
+            .market-grid { grid-template-columns: 1fr; gap: 12px; margin-top: 12px; }
+            .market-card { padding: 16px 14px; gap: 8px; min-height: 0; }
+            .market-title { min-height: 0; }
+            .market-hint { display: none; }
+
+            /* ── Proof (#slide-6): layout em fluxo normal ── */
+            #slide-6 {
+                padding: 0 !important;
+                height: auto !important;
+                justify-content: flex-start !important;
+                align-items: stretch !important;
+                overflow: visible !important;
+            }
+            .proof-people-img {
+                position: relative !important;
+                width: 100%;
+                height: 220px;
+                object-fit: cover;
+                object-position: center top;
+                opacity: 1;
+            }
+            .proof-gradient { display: none !important; }
+            .proof-content {
+                position: relative !important;
+                z-index: 1;
+                max-width: 100%;
+                text-align: center;
+                align-items: center;
+                margin: 0;
+                padding: 28px 22px 20px;
+                gap: 16px;
+            }
+            .proof-content h2,
+            .proof-content h3 { text-align: center !important; }
+            .proof-stats {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 10px;
+                width: 100%;
+            }
+            .proof-stats .stat-box { padding: 18px 12px; border-radius: 16px; min-width: 0; }
+            .proof-car-strip {
+                position: relative !important;
+                left: auto !important;
+                bottom: auto !important;
+                transform: none !important;
+                width: 100% !important;
+                border-radius: 0 !important;
+                margin-top: 20px;
+                padding: 12px 10px;
+                gap: 8px;
+            }
+            .proof-car-logo { width: 104px; height: 54px; border-radius: 10px; }
+            .proof-car-logo img { height: 28px; max-width: 76px; }
+
+            /* ── Human moment: foto + quote empilhados ── */
+            #slide-human {
+                padding: 0 !important;
+                height: auto !important;
+                justify-content: flex-start !important;
+                align-items: stretch !important;
+                overflow: visible !important;
+            }
+            .human-bg-img {
+                position: relative !important;
+                width: 100%;
+                height: 210px;
+                object-fit: cover;
+                object-position: center top;
+                filter: brightness(0.9) saturate(1.1);
+            }
+            .human-bg-gradient { display: none !important; }
+            .human-quote-overlay {
+                position: relative !important;
+                z-index: 1;
+                max-width: 100%;
+                margin: 0;
+                border-radius: 0;
+                background: #F5F5F0;
+                border: none;
+                box-shadow: none;
+                backdrop-filter: none;
+                padding: 24px 22px 28px;
+            }
+            .human-quote-text { font-size: clamp(20px, 6vw, 30px); color: #1d1d1f; }
+            .human-quote-sub { font-size: 13px; margin-top: 12px; }
+            .human-accent { margin: 14px 0; }
+
+            /* ── CTA ── */
+            .cta-grid { flex-direction: column; gap: 14px; }
+            .cta-card-primary,
+            .cta-card-outline { padding: 24px 18px; }
+
+            /* ── Micro-quote ── */
+            .micro-quote { font-size: 13px; padding: 10px 14px; }
+
+            /* ── Separador visual entre slides ── */
+            .slide + .slide {
+                border-top: 1px solid rgba(29,29,31,0.07);
+            }
+        }
+
+        @media (max-height: 700px) and (min-width: 769px) {
+            .slide { padding: 50px 60px 70px; }
+            h2 { font-size: clamp(18px, 2.5vw, 28px) !important; }
+            .stat-number { font-size: clamp(28px, 3.5vw, 42px) !important; }
+            #slide-5 { padding: 62px 48px 116px; }
+            .market-slide { padding: 60px 44px 118px; }
+            .market-card { padding: 18px 16px; }
+            .market-number { font-size: clamp(34px, 4vw, 50px); }
+            .dash-layout { gap: 14px; }
+            .dash-content { gap: 14px; }
+            .dash-img { max-height: 260px; }
+            #slide-6 { padding: 0 40px 128px; }
+            .proof-content { padding: 56px 0 156px; }
+            .proof-car-strip { bottom: 74px; }
+            #slide-human { padding: 0 40px 102px !important; }
+            .human-quote-overlay { max-width: 560px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="presentation-container" id="presentation">
+
+    <!-- ═══════════════════════════════════════════
+         SLIDE 1 — COVER
+    ═══════════════════════════════════════════ -->
+    <div class="slide slide-light" id="slide-0">
+        <div class="cover-layout">
+            <div class="cover-text">
+                <img src="assets/logo.png" alt="E+ Wallet" class="logo-img fade-el" style="transition-delay:0.05s">
+                <h1 class="fade-el" style="transition-delay:0.15s">Campanhas de incentivo que funcionam.</h1>
+                <p class="cover-small-note fade-el" style="transition-delay:0.25s">Sem operação pesando.</p>
+                <div class="cover-highlight-btn fade-el" style="transition-delay:0.35s">A plataforma all-in-one</div>
+
+                <div class="avatar-strip fade-el" style="transition-delay:0.55s">
+                    <div class="avatar-cluster">
+                        <div class="avatar-circle" style="background:linear-gradient(135deg,#F9D423,#FFD700)">CA</div>
+                        <div class="avatar-circle" style="background:linear-gradient(135deg,#22c55e,#16a34a)">MR</div>
+                        <div class="avatar-circle" style="background:linear-gradient(135deg,#3b82f6,#2563eb)">FS</div>
+                        <div class="avatar-circle" style="background:linear-gradient(135deg,#a855f7,#7c3aed)">LP</div>
+                        <div class="avatar-circle" style="background:linear-gradient(135deg,#ec4899,#db2777)">TG</div>
+                    </div>
+                    <span class="avatar-strip-label">+100 mil pessoas premiadas</span>
+                </div>
+            </div>
+            <div class="cover-img-wrap fade-el float-anim" style="transition-delay:0.35s">
+                <img src="assets/celular.png" alt="E+ Wallet App" class="cover-img">
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════
+         SLIDE 2 — PROBLEMA
+    ═══════════════════════════════════════════ -->
+    <div class="slide slide-light" id="slide-1">
+        <h2 class="fade-el" style="transition-delay:0.1s">Três gargalos que toda campanha de incentivo enfrenta.</h2>
+        <h3 class="fade-el" style="transition-delay:0.2s">Você reconhece esses problemas.</h3>
+
+        <p class="micro-quote fade-el" style="transition-delay:0.3s">"Lançamos a campanha. Mas o engajamento foi decepcionante."</p>
+
+        <div class="tri-grid">
+            <div class="tri-card tri-card-light card-red seq-el">
+                <span class="tri-card-icon">😤</span>
+                <div class="tri-num" style="color:#ef4444">Gargalo 01</div>
+                <div class="tri-title" style="color:#1d1d1f">Operação fragmentada</div>
+                <div class="tri-desc">Muitos fornecedores, muitos fluxos, pouca agilidade para lançar.</div>
+            </div>
+            <div class="tri-card tri-card-light card-red seq-el">
+                <span class="tri-card-icon">😶</span>
+                <div class="tri-num" style="color:#ef4444">Gargalo 02</div>
+                <div class="tri-title" style="color:#1d1d1f">Sem visibilidade real</div>
+                <div class="tri-desc">Você não sabe o que está funcionando até ser tarde demais.</div>
+            </div>
+            <div class="tri-card tri-card-light card-red seq-el">
+                <span class="tri-card-icon">😔</span>
+                <div class="tri-num" style="color:#ef4444">Gargalo 03</div>
+                <div class="tri-title" style="color:#1d1d1f">Premiação que não engaja</div>
+                <div class="tri-desc">Quando o resgate é difícil ou genérico, o esforço da campanha vai por água abaixo.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════
+         SLIDE 3 — PROPOSTA
+    ═══════════════════════════════════════════ -->
+    <div class="slide slide-light" id="slide-2">
+        <h2 class="fade-el" style="transition-delay:0.1s">Uma plataforma. Três resultados.</h2>
+        <h3 class="fade-el" style="transition-delay:0.2s; margin-bottom:30px">Resposta direta para cada gargalo.</h3>
+
+        <div class="tri-grid">
+            <div class="tri-card tri-card-light seq-el" style="border-left:4px solid #22c55e">
+                <div class="tri-num" style="color:#22c55e">Resultado 01</div>
+                <div class="tri-title">Lançamento mais rápido</div>
+                <div class="tri-desc">Do briefing a campanha no ar. Sem retrabalho, sem idas e vindas.</div>
+            </div>
+            <div class="tri-card tri-card-light seq-el" style="border-left:4px solid #22c55e">
+                <div class="tri-num" style="color:#22c55e">Resultado 02</div>
+                <div class="tri-title">Controle em tempo real</div>
+                <div class="tri-desc">Tudo em um lugar. Dados, saldo, performance, comunicação.</div>
+            </div>
+            <div class="tri-card tri-card-light card-human-highlight seq-el" style="border-left:4px solid #F9D423">
+                <div class="tri-num" style="color:#B8860B">Resultado 03</div>
+                <div class="tri-title">Premiação que o colaborador valoriza</div>
+                <div class="tri-desc">Ele escolhe como usar. Isso muda o engajamento.</div>
+                <div class="card-pull-quote">"Ele contou pro colega. Isso não tem preço."</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════
+         SLIDE 4 — COMO FUNCIONA
+    ═══════════════════════════════════════════ -->
+    <div class="slide slide-light step-showcase-slide" id="slide-3">
+        <h2 class="fade-el" style="transition-delay:0.1s">Simples para quem cria. Claro para quem recebe.</h2>
+        <h3 class="fade-el" style="transition-delay:0.18s">Três passos do briefing ao resgate.</h3>
+
+        <div class="step-showcase">
+            <!-- Passo 1 -->
+            <div class="step-panel seq-el">
+                <img src="assets/criacao de campanhas.png" alt="Criação de campanhas" class="step-img-large">
+                <div class="step-content-panel">
+                    <div class="step-passo-badge">Passo 1 de 3</div>
+                    <div class="step-title">Crie com a sua cara</div>
+                    <div class="step-desc">Defina mecânica, público e regras.<br>A plataforma carrega a sua identidade, não a nossa.</div>
+                    <div class="step-progress">
+                        <div class="step-progress-dot active" style="width:22px"></div>
+                        <div class="step-progress-dot" style="width:7px"></div>
+                        <div class="step-progress-dot" style="width:7px"></div>
+                        <span class="step-hint">Pressione espaço para continuar -></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Passo 2 -->
+            <div class="step-panel seq-el">
+                <img src="assets/gestao de automacao.png" alt="Gestão e automação" class="step-img-large">
+                <div class="step-content-panel">
+                    <div class="step-passo-badge">Passo 2 de 3</div>
+                    <div class="step-title">Automatize a operação</div>
+                    <div class="step-desc">Mensagens, tracking e pagamentos centralizados.<br>Um painel, sem planilha paralela.</div>
+                    <div class="step-progress">
+                        <div class="step-progress-dot" style="width:7px"></div>
+                        <div class="step-progress-dot active" style="width:22px"></div>
+                        <div class="step-progress-dot" style="width:7px"></div>
+                        <span class="step-hint">Pressione espaço para continuar -></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Passo 3 -->
+            <div class="step-panel seq-el">
+                <img src="assets/resgate de premios.png" alt="Resgate de prêmios" class="step-img-large" onerror="this.src='assets/human-reward-moment.jpg'">
+                <div class="step-content-panel">
+                    <div class="step-passo-badge">Passo 3 de 3</div>
+                    <div class="step-title">Entregue o resgate com liberdade</div>
+                    <div class="step-desc">Pix, gift cards, produtos, pagamento de contas.<br>O premiado decide.</div>
+                    <div class="step-progress">
+                        <div class="step-progress-dot" style="width:7px"></div>
+                        <div class="step-progress-dot" style="width:7px"></div>
+                        <div class="step-progress-dot active" style="width:22px"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════
+         SLIDE 4.5 — O MOMENTO QUE IMPORTA
+    ═══════════════════════════════════════════ -->
+    <div class="slide slide-light" id="slide-human" style="padding:0 60px 130px; justify-content:center; align-items:flex-end;">
+        <!-- Full-bleed photo -->
+        <img src="assets/human-team-celebration.jpg"
+             alt="Time celebrando meta batida"
+             class="human-bg-img">
+        <!-- Gradient overlay fading photo into dark -->
+        <div class="human-bg-gradient"></div>
+        <!-- Quote anchored to right side -->
+        <div class="human-quote-overlay fade-el" style="transition-delay:0.15s;">
+            <span class="pill pill-amber fade-el" style="font-size:13px; padding:7px 18px; transition-delay:0.2s">O que realmente importa</span>
+            <div class="human-accent fade-el" style="transition-delay:0.35s"></div>
+            <p class="human-quote-text fade-el" style="transition-delay:0.45s">
+                "A melhor campanha é aquela que o colaborador conta pro colega."
+            </p>
+            <p class="human-quote-sub fade-el" style="transition-delay:0.6s">
+                Reconhecimento real gera engajamento real.<br>
+                E engajamento real gera resultado.
+            </p>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════
+         SLIDE 5 — CARTEIRA DO PREMIADO
+    ═══════════════════════════════════════════ -->
+    <div class="slide slide-light" id="slide-4">
+        <div class="wallet-layout">
+            <div class="wallet-img-wrap fade-el float-anim" style="transition-delay:0.15s">
+                <img src="assets/premiação.png" alt="E+ Wallet App" class="wallet-img" style="border-radius:16px; background:transparent; box-shadow: 0 24px 60px rgba(0,0,0,0.5);">
+            </div>
+            <div class="wallet-content">
+                <h2 class="fade-el" style="transition-delay:0.1s; text-align:left">Na mão de quem recebe,<br>a premiação faz sentido.</h2>
+                <p class="fade-el" style="transition-delay:0.2s; color:#8e8e93; font-size:15px; margin:12px 0 24px; line-height:1.6">Mais de 44 mil opções. O colaborador escolhe<br>o que tem valor pra ele.</p>
+
+                <div class="badge-grid fade-el" style="transition-delay:0.3s">
+                    <div class="badge-item"><span class="b-icon">💳</span>PIX</div>
+                    <div class="badge-item"><span class="b-icon">🎁</span>Gift Cards</div>
+                    <div class="badge-item"><span class="b-icon">📦</span>+44k Produtos</div>
+                    <div class="badge-item"><span class="b-icon">📄</span>Boletos</div>
+                    <div class="badge-item"><span class="b-icon">📱</span>Recarga</div>
+                    <div class="badge-item"><span class="b-icon">💰</span>Cartão Pré-Pago</div>
+                </div>
+
+                <div class="fade-el" style="margin-top:22px; transition-delay:0.45s">
+                    <span class="pill pill-amber">+44.000 itens no catálogo</span>
+                </div>
+
+                <div class="employee-quote fade-el" style="transition-delay:0.55s">
+                    <p class="employee-quote-text">"Cuide dos seus funcionários e eles cuidarão do seu negócio."</p>
+                    <p class="employee-quote-attr">- Colaborador premiado, E+ Wallet</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════
+         SLIDE 6 — CONTROLE
+    ═══════════════════════════════════════════ -->
+    <div class="slide slide-light" id="slide-5">
+        <div class="dash-layout">
+            <div class="dash-head">
+                <h2 class="fade-el" style="transition-delay:0.1s">Você acompanha tudo. Em tempo real.</h2>
+                <h3 class="fade-el" style="transition-delay:0.18s">Sem depender de planilha.</h3>
+            </div>
+
+            <div class="dash-content">
+                <img src="assets/dashboard.png" alt="Dashboard E+ Wallet" class="dash-img fade-el" style="transition-delay:0.28s">
+
+                <div class="check-list fade-el" style="transition-delay:0.42s">
+                    <div class="check-item">
+                        <div class="check-dot">✓</div>
+                        Veja participação, saldo e desempenho sem depender de planilha.
+                    </div>
+                    <div class="check-item">
+                        <div class="check-dot">✓</div>
+                        Comunique, ajuste e tome decisão no mesmo lugar.
+                    </div>
+                    <div class="check-item">
+                        <div class="check-dot">✓</div>
+                        Rastreabilidade completa: de quem recebeu a quem resgatou.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════
+         SLIDE 7 — DADOS DE MERCADO
+    ═══════════════════════════════════════════ -->
+    <div class="slide slide-light market-slide" id="slide-market">
+        <div class="market-head">
+            <h2 class="fade-el" style="transition-delay:0.1s">Incentivo não é custo. É performance.</h2>
+            <h3 class="fade-el" style="transition-delay:0.2s">Três dados de mercado que conectam engajamento a resultado.</h3>
+        </div>
+
+        <div class="market-grid">
+            <div class="market-card seq-el" style="--market-fill:21%;">
+                <span class="market-kicker">Engajamento e lucro</span>
+                <div class="market-number" data-target="21" data-prefix="" data-suffix="%">0%</div>
+                <div class="market-title">equipes altamente engajadas são mais lucrativas.</div>
+                <div class="market-meter">
+                    <div class="market-meter-fill"></div>
+                </div>
+                <div class="market-insight">Engajamento não é “soft”: mexe direto no resultado financeiro da operação.</div>
+                <div class="market-source">Fonte: Gallup — State of the Global Workplace</div>
+            </div>
+
+            <div class="market-card seq-el" style="--market-fill:69%;">
+                <span class="market-kicker">Produtividade e retenção</span>
+                <div class="market-number" data-target="69" data-prefix="" data-suffix="%">0%</div>
+                <div class="market-title">trabalhariam mais se se sentissem mais reconhecidos.</div>
+                <div class="market-meter">
+                    <div class="market-meter-fill"></div>
+                </div>
+                <div class="market-insight">Reconhecimento é alavanca direta de esforço extra e consistência no time.</div>
+                <div class="market-source">Fonte: Zippia</div>
+            </div>
+
+            <div class="market-card seq-el" style="--market-fill:44%;">
+                <span class="market-kicker">Vendas e resultado</span>
+                <div class="market-number" data-target="44" data-prefix="" data-suffix="%">0%</div>
+                <div class="market-title">de ganho potencial na performance com incentivos estruturados.</div>
+                <div class="market-meter">
+                    <div class="market-meter-fill"></div>
+                </div>
+                <div class="market-insight">Campanha bem desenhada gera impacto mensurável em performance comercial.</div>
+                <div class="market-source">Fonte: Incentive Research Foundation</div>
+            </div>
+        </div>
+        <p class="market-hint fade-el" style="transition-delay:0.3s">Pressione espaço para revelar cada evidência.</p>
+    </div>
+
+    <!-- ═══════════════════════════════════════════
+         SLIDE 8 — PROVA DE MERCADO
+    ═══════════════════════════════════════════ -->
+    <div class="slide slide-light" id="slide-6">
+        <!-- Full-bleed team photo -->
+        <img src="assets/section 4.jpg" alt="Time celebrando" class="proof-people-img">
+        <div class="proof-gradient"></div>
+
+        <div class="proof-content">
+            <h2 class="fade-el" style="transition-delay:0.1s; text-align:right; margin-bottom:6px;">Mais de 300 empresas já simplificaram a operação.</h2>
+            <h3 class="fade-el" style="transition-delay:0.18s; text-align:right; margin-bottom:28px;">Números que falam por si.</h3>
+
+            <div class="proof-stats fade-el" style="transition-delay:0.3s;">
+                <div class="stat-box">
+                    <div class="stat-number" style="color:#B8860B">+100 mil</div>
+                    <div class="stat-label">pessoas premiadas</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number" style="color:#22c55e">+R$ 85 mi</div>
+                    <div class="stat-label">distribuídos em premiações</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number" style="color:#3b82f6">+300</div>
+                    <div class="stat-label">empresas parceiras</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ── Two-row animated logo carousel ── -->
+        <div class="proof-car-strip fade-el" style="transition-delay:0.5s;">
+            <!-- Row 1 → scrolls left -->
+            <div class="proof-car-row">
+                <div class="proof-car-track proof-car-fwd">
+                    <span class="proof-car-logo"><img src="logos/aggile.png"      alt="Aggile"></span>
+                    <span class="proof-car-logo"><img src="logos/argali.png"      alt="Argali"></span>
+                    <span class="proof-car-logo"><img src="logos/assim saude.png" alt="Assim Saúde"></span>
+                    <span class="proof-car-logo"><img src="logos/barone.png"      alt="Barone"></span>
+                    <span class="proof-car-logo"><img src="logos/idealis.png"     alt="Idealis"></span>
+                    <span class="proof-car-logo"><img src="logos/jundu.png"       alt="Jundu"></span>
+                    <span class="proof-car-logo"><img src="logos/leve saude.png"  alt="Leve Saúde"></span>
+                    <!-- duplicate for seamless loop -->
+                    <span class="proof-car-logo" aria-hidden="true"><img src="logos/aggile.png"      alt=""></span>
+                    <span class="proof-car-logo" aria-hidden="true"><img src="logos/argali.png"      alt=""></span>
+                    <span class="proof-car-logo" aria-hidden="true"><img src="logos/assim saude.png" alt=""></span>
+                    <span class="proof-car-logo" aria-hidden="true"><img src="logos/barone.png"      alt=""></span>
+                    <span class="proof-car-logo" aria-hidden="true"><img src="logos/idealis.png"     alt=""></span>
+                    <span class="proof-car-logo" aria-hidden="true"><img src="logos/jundu.png"       alt=""></span>
+                    <span class="proof-car-logo" aria-hidden="true"><img src="logos/leve saude.png"  alt=""></span>
+                </div>
+            </div>
+            <!-- Row 2 → scrolls right -->
+            <div class="proof-car-row">
+                <div class="proof-car-track proof-car-rev">
+                    <span class="proof-car-logo"><img src="logos/mega moda.png"        alt="Mega Moda"></span>
+                    <span class="proof-car-logo"><img src="logos/multiedro.png"        alt="Multiedro"></span>
+                    <span class="proof-car-logo"><img src="logos/parzi.png"            alt="Parzi"></span>
+                    <span class="proof-car-logo"><img src="logos/qualivida.png"        alt="Qualivida"></span>
+                    <span class="proof-car-logo"><img src="logos/seculus.png"          alt="Seculus"></span>
+                    <span class="proof-car-logo"><img src="logos/segment.png"          alt="Segment"></span>
+                    <span class="proof-car-logo"><img src="logos/Stihl_Logo.svg.png"   alt="Stihl"></span>
+                    <!-- duplicate for seamless loop -->
+                    <span class="proof-car-logo" aria-hidden="true"><img src="logos/mega moda.png"       alt=""></span>
+                    <span class="proof-car-logo" aria-hidden="true"><img src="logos/multiedro.png"       alt=""></span>
+                    <span class="proof-car-logo" aria-hidden="true"><img src="logos/parzi.png"           alt=""></span>
+                    <span class="proof-car-logo" aria-hidden="true"><img src="logos/qualivida.png"       alt=""></span>
+                    <span class="proof-car-logo" aria-hidden="true"><img src="logos/seculus.png"         alt=""></span>
+                    <span class="proof-car-logo" aria-hidden="true"><img src="logos/segment.png"         alt=""></span>
+                    <span class="proof-car-logo" aria-hidden="true"><img src="logos/Stihl_Logo.svg.png"  alt=""></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════
+         SLIDE 10 — CTA
+    ═══════════════════════════════════════════ -->
+    <div class="slide slide-light" id="slide-8">
+        <img src="assets/logo.png" alt="E+ Wallet" class="logo-img fade-el" style="transition-delay:0.05s">
+
+        <h2 class="fade-el" style="transition-delay:0.15s">Comece agora mesmo pelo nosso chatbot ou fale com o time.</h2>
+        <h3 class="fade-el" style="transition-delay:0.22s; margin-bottom:32px">Sem formulário longo. Sem demo de 1 hora. Direto ao ponto.</h3>
+
+        <div class="cta-grid fade-el" style="transition-delay:0.35s">
+            <div class="cta-card-primary" style="display:flex; flex-direction:column; align-items:center;">
+                <div class="cta-card-icon">
+                    <img src="assets/bot.png" alt="Chatbot" style="width:64px; height:64px; object-fit:contain; border-radius:12px">
+                </div>
+                <div class="cta-card-title" style="color:#1d1d1f">Crie com o chatbot</div>
+                <div class="cta-card-desc">Crie sua campanha do zero com nossa IA. Em minutos.</div>
+                <img src="assets/tCWh9l.png" alt="QR Code" style="width:96px; height:96px; border-radius:10px; background:white; padding:6px; margin: 8px 0 14px;">
+                <a href="https://studio--ebot-22w20.us-central1.hosted.app/" target="_blank" rel="noopener noreferrer" class="cta-btn cta-btn-amber pulse-anim">Acessar o chatbot -></a>
+            </div>
+            <div class="cta-card-outline">
+                <div class="cta-card-title" style="color:#1d1d1f">Prefere conversar?</div>
+                <div class="cta-card-desc">Prefere conversar antes? Escreve pra gente.</div>
+                <div class="cta-contact-name" style="color:#1d1d1f">Leonardo Castanho, Gerente E+ MKT</div>
+                <div class="cta-email">comercial@emaiswallet.com.br</div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- Slide Dots -->
+<div class="slide-indicator" id="indicator">
+    <span class="dot active" data-idx="0"></span>
+    <span class="dot" data-idx="1"></span>
+    <span class="dot" data-idx="2"></span>
+    <span class="dot" data-idx="3"></span>
+    <span class="dot" data-idx="4"></span>
+    <span class="dot" data-idx="5"></span>
+    <span class="dot" data-idx="6"></span>
+    <span class="dot" data-idx="7"></span>
+    <span class="dot" data-idx="8"></span>
+    <span class="dot" data-idx="9"></span>
+</div>
+
+<script>
+    const TOTAL = 10;
+    let currentSlide = 0;
+    let animationStep = {}; // tracks sequential animation step per slide
+
+    const presentation = document.getElementById('presentation');
+    const dots = document.querySelectorAll('.dot');
+    const slides = document.querySelectorAll('.slide');
+
+    // Slides with sequential (spacebar-triggered) card animations
+    const seqSlides = new Set([1, 2, 3, 7]);
+
+    function resetMarketNumbers(scope) {
+        scope.querySelectorAll('.market-number[data-target]').forEach(el => {
+            const prefix = el.dataset.prefix || '';
+            const suffix = el.dataset.suffix || '';
+            el.textContent = `${prefix}0${suffix}`;
+            el.dataset.animated = 'false';
+        });
+    }
+
+    function animateMarketNumber(el) {
+        if (el.dataset.animated === 'true') return;
+        const target = parseInt(el.dataset.target || '0', 10);
+        if (Number.isNaN(target)) return;
+
+        const prefix = el.dataset.prefix || '';
+        const suffix = el.dataset.suffix || '';
+        const duration = 700;
+        const start = performance.now();
+        el.dataset.animated = 'true';
+
+        const frame = now => {
+            const progress = Math.min((now - start) / duration, 1);
+            const value = Math.round(target * progress);
+            el.textContent = `${prefix}${value}${suffix}`;
+            if (progress < 1) {
+                requestAnimationFrame(frame);
+            }
+        };
+
+        requestAnimationFrame(frame);
+    }
+
+    function runElementEffects(el) {
+        el.querySelectorAll('.market-number[data-target]').forEach(animateMarketNumber);
+    }
+
+    // ── Gather sequential elements per slide ──
+    const seqElements = {};
+    slides.forEach((slide, i) => {
+        const els = slide.querySelectorAll('.seq-el');
+        if (els.length > 0) {
+            seqElements[i] = Array.from(els);
+        }
+        animationStep[i] = 0;
+    });
+
+    // ── Initialize: show fade-el on non-seq slides immediately when active ──
+    function initSlide(idx) {
+        const slide = slides[idx];
+
+        // Trigger fade-el animations
+        const fadeEls = slide.querySelectorAll('.fade-el');
+        setTimeout(() => {
+            fadeEls.forEach(el => el.classList.add('visible'));
+        }, 80);
+
+        resetMarketNumbers(slide);
+
+        // For non-seq slides, auto-show seq-el too (shouldn't exist, but safety)
+        if (!seqSlides.has(idx)) {
+            const sEls = slide.querySelectorAll('.seq-el');
+            sEls.forEach(el => el.classList.add('animate-in'));
+        }
+
+        // Reset seq step
+        animationStep[idx] = 0;
+    }
+
+    // ── Mobile detection ──
+    const MOBILE_BP = 768;
+    function isMobile() { return window.innerWidth <= MOBILE_BP; }
+
+    // ── Navigate to a slide (desktop only) ──
+    function goTo(idx) {
+        if (isMobile()) return;
+        if (idx < 0 || idx >= TOTAL) return;
+
+        const oldSlide = slides[currentSlide];
+        oldSlide.querySelectorAll('.fade-el').forEach(el => el.classList.remove('visible'));
+        if (seqSlides.has(currentSlide)) {
+            oldSlide.querySelectorAll('.seq-el').forEach(el => {
+                el.classList.remove('animate-in');
+                el.classList.remove('animate-out');
+            });
+            animationStep[currentSlide] = 0;
+        }
+        resetMarketNumbers(oldSlide);
+
+        currentSlide = idx;
+        presentation.style.transform = `translateX(-${currentSlide * 100}vw)`;
+        dots.forEach((d, i) => d.classList.toggle('active', i === currentSlide));
+        setTimeout(() => initSlide(currentSlide), 100);
+    }
+
+    // ── Next action (desktop only) ──
+    function nextAction() {
+        if (isMobile()) return;
+        if (seqSlides.has(currentSlide)) {
+            const els = seqElements[currentSlide];
+            const step = animationStep[currentSlide];
+            if (step < els.length) {
+                const slide = slides[currentSlide];
+                if (slide.classList.contains('step-showcase-slide') && step > 0) {
+                    els[step - 1].classList.remove('animate-in');
+                    els[step - 1].classList.add('animate-out');
+                }
+                els[step].classList.add('animate-in');
+                runElementEffects(els[step]);
+                animationStep[currentSlide]++;
+                return;
+            }
+        }
+        goTo(currentSlide + 1);
+    }
+
+    // ── Keyboard (desktop) ──
+    document.addEventListener('keydown', e => {
+        if (isMobile()) return;
+        if (e.key === 'ArrowRight' || e.key === ' ') {
+            e.preventDefault();
+            nextAction();
+        } else if (e.key === 'ArrowLeft') {
+            e.preventDefault();
+            goTo(currentSlide - 1);
+        }
+    });
+
+    // ── Click navigation (desktop, X-based) ──
+    document.addEventListener('click', e => {
+        if (isMobile()) return;
+        if (e.target.closest('.slide-indicator') || e.target.closest('.cta-btn')) return;
+        if (e.clientX > window.innerWidth / 2) {
+            nextAction();
+        } else {
+            goTo(currentSlide - 1);
+        }
+    });
+
+    // ── Dot navigation (desktop) ──
+    dots.forEach(dot => {
+        dot.addEventListener('click', e => {
+            if (isMobile()) return;
+            e.stopPropagation();
+            goTo(parseInt(dot.dataset.idx));
+        });
+    });
+
+    // ── Resize: mantém transform correto ao girar tela ──
+    window.addEventListener('resize', () => {
+        if (isMobile()) {
+            presentation.style.transform = 'none';
+            return;
+        }
+        presentation.style.transition = 'none';
+        presentation.style.transform = `translateX(-${currentSlide * 100}vw)`;
+        setTimeout(() => { presentation.style.transition = ''; }, 60);
+    });
+
+    // ── Mobile: exibir todo conteúdo de uma vez ──
+    function initMobile() {
+        presentation.style.transform = 'none';
+        presentation.style.transition = 'none';
+
+        // Revelar todos os elementos animados imediatamente
+        slides.forEach(slide => {
+            slide.querySelectorAll('.fade-el').forEach(el => el.classList.add('visible'));
+            slide.querySelectorAll('.seq-el').forEach(el => {
+                el.classList.remove('animate-out');
+                el.classList.add('animate-in');
+            });
+        });
+
+        // Dados de mercado: animar ao rolar até a seção (IntersectionObserver)
+        const obs = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (!entry.isIntersecting) return;
+                const card = entry.target;
+
+                // Animar número contando do zero
+                card.querySelectorAll('.market-number[data-target]').forEach(animateMarketNumber);
+
+                // Expandir barra de progresso
+                card.querySelectorAll('.market-meter-fill').forEach(fill => {
+                    fill.style.width = card.style.getPropertyValue('--market-fill') || '0%';
+                });
+
+                obs.unobserve(card);
+            });
+        }, { threshold: 0.45 });
+
+        // Garantir que os números começam em 0 antes de observar
+        document.querySelectorAll('.market-card').forEach(card => {
+            card.querySelectorAll('.market-number[data-target]').forEach(el => {
+                const prefix = el.dataset.prefix || '';
+                const suffix = el.dataset.suffix || '';
+                el.textContent = `${prefix}0${suffix}`;
+                el.dataset.animated = 'false';
+            });
+            obs.observe(card);
+        });
+    }
+
+    // ── Init ──
+    if (isMobile()) {
+        initMobile();
+    } else {
+        initSlide(0);
+    }
+</script>
+</body>
+</html>
+
