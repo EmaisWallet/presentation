@@ -1,0 +1,104 @@
+# E+ Wallet - Textos Editaveis da Apresentacao
+# Contrato v2
+# Regras:
+# 1) Edite apenas o texto apos "=".
+# 2) Nao renomeie nem remova as chaves.
+# 3) Para quebra de linha no mesmo bloco, use "<br>".
+# 4) Este arquivo reflete o deck atual (slide "Para quem..." removido).
+
+[slide-0]
+h1=Campanhas de incentivo que funcionam. Sem a operacao pesando.
+h2=A plataforma all-in-one da E+ Wallet.
+avatar_label=+100 mil pessoas premiadas
+
+[slide-1]
+h2=Tres gargalos que toda campanha de incentivo enfrenta.
+h3=Voce reconhece esses problemas.
+quote_1="Lancamos a campanha. Mas o engajamento foi decepcionante."
+card1_tag=Gargalo 01
+card1_title=Operacao fragmentada
+card1_desc=Muitos fornecedores, muitos fluxos, pouca agilidade para lancar.
+card2_tag=Gargalo 02
+card2_title=Sem visibilidade real
+card2_desc=Voce nao sabe o que esta funcionando ate ser tarde demais.
+card3_tag=Gargalo 03
+card3_title=Premiacao que nao engaja
+card3_desc=Quando o resgate e dificil ou generico, o esforco da campanha vai por agua abaixo.
+
+[slide-2]
+h2=Uma plataforma. Tres resultados.
+h3=Resposta direta para cada gargalo.
+card1_tag=Resultado 01
+card1_title=Lancamento mais rapido
+card1_desc=Do briefing a campanha no ar. Sem retrabalho, sem idas e vindas.
+card2_tag=Resultado 02
+card2_title=Controle em tempo real
+card2_desc=Tudo em um lugar. Dados, saldo, performance, comunicacao.
+card3_tag=Resultado 03
+card3_title=Premiacao que o colaborador valoriza
+card3_desc=Ele escolhe como usar. Isso muda o engajamento.
+card3_pull_quote="Ele contou pro colega. Isso nao tem preco."
+
+[slide-3]
+h2=Simples para quem cria. Claro para quem recebe.
+h3=Tres passos do briefing ao resgate.
+step1_badge=Passo 1 de 3
+step1_icon=PAINT
+step1_title=Crie com a sua cara
+step1_desc=Defina mecanica, publico e regras.<br>A plataforma carrega a sua identidade, nao a nossa.
+step1_hint=Pressione espaco para continuar ->
+step2_badge=Passo 2 de 3
+step2_icon=GEAR
+step2_title=Automatize a operacao
+step2_desc=Mensagens, tracking e pagamentos centralizados.<br>Um painel, sem planilha paralela.
+step2_hint=Pressione espaco para continuar ->
+step3_badge=Passo 3 de 3
+step3_icon=HANDS
+step3_title=Entregue o resgate com liberdade
+step3_desc=Pix, gift cards, produtos, pagamento de contas.<br>O premiado decide.
+
+[slide-human]
+pill_1=O que realmente importa
+quote_1="A melhor campanha é aquela que o colaborador conta pro colega."
+sub_1=Reconhecimento real gera engajamento real.<br>E engajamento real gera resultado.
+
+[slide-4]
+h2=Na mao de quem recebe,<br>a premiacao faz sentido.
+p_1=Mais de 44 mil opcoes. O colaborador escolhe<br>o que tem valor pra ele.
+badge1=PIX
+badge2=Gift Cards
+badge3=+44k Produtos
+badge4=Boletos
+badge5=Recarga
+badge6=Cartao Pre-Pago
+pill_1=+44.000 itens no catalogo
+quote_1=“Cuide dos seus funcionários e eles cuidarão do seu negócio.”
+quote_attr=- Colaborador premiado, E+ Wallet
+
+[slide-5]
+h2=Voce acompanha tudo. Em tempo real.
+h3=Sem depender de planilha.
+check1=Veja participacao, saldo e desempenho sem depender de planilha.
+check2=Comunique, ajuste e tome decisao no mesmo lugar.
+check3=Rastreabilidade completa: de quem recebeu a quem resgatou.
+
+[slide-6]
+h2=Mais de 300 empresas ja simplificaram a operacao.
+h3=Numeros que falam por si.
+stat1_value=+100 mil
+stat1_label=pessoas premiadas
+stat2_value=+R$ 85 mi
+stat2_label=distribuidos em premiacoes
+stat3_value=+300
+stat3_label=empresas parceiras
+
+[slide-8]
+h2=Comece agora mesmo pelo nosso chatbot ou fale com o time.
+h3=Sem formulario longo. Sem demo de 1 hora. Direto ao ponto.
+card1_title=Crie com o chatbot
+card1_desc=Crie sua campanha do zero com nossa IA. Em minutos.
+button_primary=Acessar o chatbot ->
+card2_icon=ENVELOPE
+card2_title=Prefere conversar?
+card2_desc=Prefere conversar antes? Escreve pra gente.
+card2_email=comercial@emaiswallet.com.br
