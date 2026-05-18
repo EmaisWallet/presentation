@@ -1,0 +1,4336 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E+ Wallet — Campanhas de Incentivo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            overflow: hidden;
+            height: 100vh;
+            background: #E8E8E3;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Montserrat', 'Inter', sans-serif;
+        }
+
+        .presentation-container {
+            display: flex;
+            height: 100vh;
+            transition: transform 0.65s cubic-bezier(0.4, 0, 0.2, 1);
+            will-change: transform;
+        }
+
+        /* ─── SLIDE BASE ─── */
+        .slide {
+            min-width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 70px 80px 90px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .slide-light {
+            background: #F5F5F0;
+            color: #1d1d1f;
+        }
+
+        .slide-dark {
+            background: #1E1E1E;
+            color: #f5f5f0;
+        }
+
+        /* ─── FADE-IN ANIMATIONS ─── */
+        .fade-el {
+            opacity: 0;
+            transform: translateY(28px);
+            transition: opacity 0.75s ease-out, transform 0.75s ease-out;
+        }
+
+        .fade-el.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Manual sequential elements — hidden until .animate-in */
+        .seq-el {
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .seq-el.animate-in {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ─── TYPOGRAPHY ─── */
+        .slide-dark h1 {
+            font-size: clamp(38px, 5vw, 64px);
+            font-weight: 900;
+            line-height: 1.1;
+            text-align: center;
+            background: linear-gradient(135deg, #ffffff 0%, #d4d4d4 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .slide-light h1 {
+            font-size: clamp(38px, 5vw, 64px);
+            font-weight: 900;
+            line-height: 1.1;
+            text-align: center;
+            background: linear-gradient(135deg, #1d1d1f 0%, #515154 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .slide-dark h2 {
+            font-size: clamp(22px, 3vw, 36px);
+            font-weight: 700;
+            text-align: center;
+            color: #f0f0ec;
+            margin-bottom: 8px;
+        }
+
+        .slide-light h2 {
+            font-size: clamp(22px, 3vw, 36px);
+            font-weight: 700;
+            text-align: center;
+            color: #1d1d1f;
+            margin-bottom: 8px;
+        }
+
+        .slide-dark h3 {
+            font-size: clamp(16px, 2vw, 22px);
+            font-weight: 500;
+            text-align: center;
+            color: #8e8e93;
+        }
+
+        .slide-light h3 {
+            font-size: clamp(16px, 2vw, 22px);
+            font-weight: 500;
+            text-align: center;
+            color: #6e6e73;
+        }
+
+        /* ─── GOLD ACCENT (palavras-chave nos headers) ─── */
+        .gold {
+            color: #C4972A !important;
+            -webkit-text-fill-color: #C4972A !important;
+            background: none !important;
+            -webkit-background-clip: initial !important;
+            background-clip: initial !important;
+        }
+
+        /* ─── PILLS ─── */
+        .pill {
+            display: inline-block;
+            padding: 10px 24px;
+            border-radius: 50px;
+            font-size: 15px;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+        }
+
+        .pill-amber {
+            background: linear-gradient(135deg, #F9D423 0%, #FFD700 100%);
+            color: #1a1a00;
+        }
+
+        .card-red {
+            border-left: 4px solid #ef4444;
+        }
+
+        /* ─── STAT BOXES ─── */
+        .stat-box {
+            background: rgba(255,255,255,0.07);
+            border: 1px solid rgba(255,255,255,0.12);
+            padding: 36px 32px;
+            border-radius: 24px;
+            text-align: center;
+            min-width: 220px;
+            backdrop-filter: blur(8px);
+            transition: transform 0.3s ease;
+        }
+
+        .stat-box:hover {
+            transform: translateY(-4px);
+            background: rgba(255,255,255,0.1);
+        }
+
+        .slide-light .stat-box {
+            background: #ffffff;
+            border: 1px solid rgba(29,29,31,0.1);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.07);
+            backdrop-filter: none;
+        }
+
+        .slide-light .stat-box:hover {
+            background: #ffffff;
+            box-shadow: 0 12px 32px rgba(0,0,0,0.1);
+        }
+
+        .slide-light .stat-label {
+            color: #6e6e73;
+        }
+
+        .stat-number {
+            font-size: clamp(36px, 4.5vw, 54px);
+            font-weight: 900;
+            margin-bottom: 8px;
+            line-height: 1;
+        }
+
+        .stat-label {
+            font-size: 15px;
+            color: #8e8e93;
+            font-weight: 500;
+        }
+
+        .step-title {
+            font-size: 17px;
+            font-weight: 700;
+            color: #1d1d1f;
+            margin-bottom: 8px;
+        }
+
+        .step-desc {
+            font-size: 14px;
+            color: #6e6e73;
+            line-height: 1.5;
+        }
+
+        /* ─── STEP SHOWCASE — large image per step ─── */
+        .step-showcase-slide {
+            gap: 10px;
+        }
+
+        .step-showcase {
+            position: relative;
+            width: 100%;
+            max-width: 1100px;
+            flex: 1;
+            min-height: 0;
+            height: 440px;
+        }
+
+        .step-panel {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            gap: 50px;
+        }
+
+        .step-panel.seq-el {
+            opacity: 0;
+            transform: translateY(28px);
+            transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1), transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+            pointer-events: none;
+        }
+
+        .step-panel.seq-el.animate-in {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+            z-index: 2;
+        }
+
+        .step-panel.seq-el.animate-out {
+            opacity: 0;
+            transform: translateY(-18px);
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .step-img-large {
+            flex: 0 0 54%;
+            max-width: 54%;
+            height: 100%;
+            max-height: 420px;
+            object-fit: cover;
+            border-radius: 20px;
+            box-shadow: 0 20px 48px rgba(0,0,0,0.13);
+        }
+
+        .step-content-panel {
+            flex: 1;
+            text-align: left;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .step-passo-badge {
+            display: inline-block;
+            padding: 6px 16px;
+            border-radius: 50px;
+            font-size: 12px;
+            font-weight: 700;
+            background: rgba(249, 212, 35, 0.12);
+            color: #B8860B;
+            border: 1px solid rgba(249, 212, 35, 0.35);
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            width: fit-content;
+        }
+
+        .step-showcase-icon {
+            width: 58px;
+            height: 58px;
+            background: linear-gradient(135deg, #F9D423 0%, #FFD700 100%);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 26px;
+            box-shadow: 0 10px 24px rgba(249, 212, 35, 0.3);
+        }
+
+        .step-content-panel .step-title {
+            font-size: clamp(24px, 3vw, 36px);
+            font-weight: 800;
+            color: #1d1d1f;
+            line-height: 1.2;
+            margin: 0;
+        }
+
+        .step-content-panel .step-desc {
+            font-size: 16px;
+            color: #6e6e73;
+            line-height: 1.65;
+            margin: 0;
+        }
+
+        .step-progress {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 4px;
+        }
+
+        .step-progress-dot {
+            height: 7px;
+            border-radius: 4px;
+            background: #d1d5db;
+            transition: all 0.3s ease;
+        }
+
+        .step-progress-dot.active {
+            background: #F9D423;
+            width: 22px !important;
+        }
+
+        .step-hint {
+            font-size: 12px;
+            color: #9ca3af;
+            margin-left: 10px;
+            letter-spacing: 0.3px;
+        }
+
+        /* ─── WALLET BADGE GRID ─── */
+        .badge-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 14px;
+            max-width: 400px;
+        }
+
+        .badge-item {
+            background: rgba(29,29,31,0.05);
+            border: 1px solid rgba(29,29,31,0.1);
+            border-radius: 14px;
+            padding: 16px 10px;
+            text-align: center;
+            font-size: 13px;
+            font-weight: 600;
+            color: #1d1d1f;
+            transition: background 0.2s ease;
+        }
+
+        .badge-item:hover {
+            background: rgba(249, 212, 35, 0.15);
+            border-color: rgba(249, 212, 35, 0.4);
+        }
+
+        .badge-item .b-icon {
+            font-size: 24px;
+            display: block;
+            margin-bottom: 6px;
+        }
+
+        /* ─── DASHBOARD CHECK LIST ─── */
+        .check-list {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            max-width: 600px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        .check-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            background: white;
+            border-radius: 14px;
+            padding: 16px 20px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.06);
+            font-size: 15px;
+            font-weight: 500;
+            color: #1d1d1f;
+        }
+
+        .check-dot {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #F9D423 0%, #FFD700 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            flex-shrink: 0;
+            box-shadow: 0 4px 12px rgba(249,212,35,0.3);
+        }
+
+        /* ─── CTA CARDS ─── */
+        .cta-grid {
+            display: flex;
+            gap: 28px;
+            justify-content: center;
+            max-width: 860px;
+            width: 100%;
+        }
+
+        .cta-card-primary {
+            flex: 1;
+            background: linear-gradient(135deg, rgba(255,210,0,0.18) 0%, rgba(217,119,6,0.12) 100%);
+            border: 2px solid rgba(255,210,0,0.5);
+            border-radius: 24px;
+            padding: 36px 28px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .cta-card-primary:hover {
+            border-color: rgba(255,210,0,0.8);
+            background: rgba(255,210,0,0.22);
+            transform: translateY(-4px);
+        }
+
+        .cta-card-outline {
+            flex: 1;
+            background: #ffffff;
+            border: 2px solid rgba(29,29,31,0.12);
+            border-radius: 24px;
+            padding: 36px 28px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .cta-card-outline:hover {
+            border-color: rgba(29,29,31,0.22);
+            background: #ffffff;
+            transform: translateY(-4px);
+            box-shadow: 0 12px 32px rgba(0,0,0,0.08);
+        }
+
+        .cta-card-icon {
+            font-size: 44px;
+            margin-bottom: 14px;
+        }
+
+        .cta-card-title {
+            font-size: 20px;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .cta-card-desc {
+            font-size: 14px;
+            color: #8e8e93;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .cta-btn {
+            display: inline-block;
+            padding: 13px 28px;
+            border-radius: 50px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            border: none;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .cta-btn-amber {
+            background: linear-gradient(135deg, #F9D423 0%, #FFD700 100%);
+            color: #1a1a00;
+            box-shadow: 0 12px 32px rgba(249,212,35,0.35);
+        }
+
+        .cta-btn-amber:hover {
+            transform: scale(1.05);
+            box-shadow: 0 16px 40px rgba(249,212,35,0.5);
+        }
+
+        .cta-email {
+            font-size: 15px;
+            color: #B8860B;
+            font-weight: 600;
+            letter-spacing: 0.2px;
+        }
+
+        .cta-contact-name {
+            font-size: 14px;
+            color: #1d1d1f;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        /* ─── COVER LAYOUT ─── */
+        .cover-layout {
+            display: flex;
+            align-items: center;
+            gap: 60px;
+            max-width: 1100px;
+            width: 100%;
+        }
+
+        .cover-text {
+            flex: 1;
+            text-align: left;
+        }
+
+        .cover-text h1 {
+            text-align: left;
+            font-size: clamp(34px, 4.5vw, 58px);
+            margin-bottom: 12px;
+        }
+
+        .cover-small-note {
+            text-align: left;
+            font-size: clamp(14px, 1.6vw, 18px);
+            color: #8e8e93;
+            font-weight: 500;
+            margin-bottom: 16px;
+        }
+
+        .cover-highlight-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 11px 20px;
+            border-radius: 999px;
+            background: linear-gradient(135deg, #F9D423 0%, #FFD700 100%);
+            border: 1px solid rgba(249,212,35,0.65);
+            color: #1a1a00;
+            font-size: clamp(14px, 1.6vw, 18px);
+            font-weight: 800;
+            letter-spacing: 0.2px;
+            margin-bottom: 20px;
+            box-shadow: 0 12px 30px rgba(249,212,35,0.34);
+        }
+
+        .cover-img-wrap {
+            flex-shrink: 0;
+            width: 340px;
+        }
+
+        .cover-img {
+            width: 100%;
+            object-fit: contain;
+            filter: drop-shadow(0 24px 48px rgba(0,0,0,0.6));
+        }
+
+        .logo-img {
+            height: 38px;
+            object-fit: contain;
+            margin-bottom: 32px;
+        }
+
+        /* ─── WALLET SLIDE LAYOUT ─── */
+        .wallet-layout {
+            display: flex;
+            align-items: center;
+            gap: 44px;
+            max-width: 1100px;
+            width: 100%;
+        }
+
+        .wallet-img-wrap {
+            flex-shrink: 0;
+            width: min(52vw, 560px);
+        }
+
+        .wallet-img {
+            width: 100%;
+            border-radius: 20px;
+            box-shadow: 0 24px 60px rgba(0,0,0,0.5);
+        }
+
+        .wallet-content {
+            flex: 1;
+            max-width: 560px;
+        }
+
+        /* ─── DASHBOARD SLIDE LAYOUT ─── */
+        .dash-img {
+            width: 100%;
+            max-width: 100%;
+            border-radius: 16px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+            margin: 0;
+            display: block;
+            max-height: 360px;
+            object-fit: cover;
+            background: white;
+        }
+
+        #slide-5 {
+            justify-content: center;
+            align-items: center;
+            padding: 82px 72px 128px;
+            gap: 14px;
+        }
+
+        .dash-layout {
+            width: 100%;
+            max-width: 1120px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .dash-head {
+            width: 100%;
+            max-width: 760px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            text-align: center;
+        }
+
+        .dash-head h2,
+        .dash-head h3 {
+            margin: 0;
+        }
+
+        .dash-content {
+            width: 100%;
+            max-width: 1080px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr);
+            gap: 20px;
+            align-items: center;
+        }
+
+        #slide-5 .check-list {
+            max-width: 100%;
+            margin: 0 auto;
+            gap: 12px;
+        }
+
+        #slide-5 .check-item {
+            padding: 14px 16px;
+            min-height: 62px;
+        }
+
+        #slide-5 .check-dot {
+            width: 28px;
+            height: 28px;
+            font-size: 14px;
+        }
+
+        /* ─── MARKET STATS SLIDE ─── */
+        .market-slide {
+            padding: 78px 68px 118px;
+            justify-content: flex-start;
+            align-items: stretch;
+            gap: 16px;
+        }
+
+        .market-head {
+            width: 100%;
+            max-width: 860px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .market-head h2,
+        .market-head h3 {
+            margin: 0;
+        }
+
+        .market-head h3 {
+            margin-top: 8px;
+            margin-bottom: 6px;
+        }
+
+        .market-grid {
+            width: 100%;
+            max-width: 1120px;
+            margin: 18px auto 0;
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 18px;
+        }
+
+        .market-card {
+            background: #ffffff;
+            border: 1px solid rgba(29, 29, 31, 0.08);
+            border-top: 4px solid #22c55e;
+            border-radius: 20px;
+            padding: 22px 20px;
+            box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
+            display: flex;
+            flex-direction: column;
+            min-height: 320px;
+            gap: 12px;
+        }
+
+        .market-kicker {
+            display: inline-flex;
+            align-items: center;
+            width: fit-content;
+            padding: 7px 14px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.6px;
+            text-transform: uppercase;
+            background: rgba(6, 182, 212, 0.12);
+            color: #0891b2;
+        }
+
+        .market-number {
+            font-size: clamp(40px, 4.6vw, 58px);
+            line-height: 1;
+            font-weight: 900;
+            color: #16a34a;
+            letter-spacing: -0.8px;
+        }
+
+        .market-title {
+            font-size: 17px;
+            font-weight: 700;
+            color: #1d1d1f;
+            line-height: 1.35;
+            min-height: 70px;
+        }
+
+        .market-meter {
+            width: 100%;
+            height: 8px;
+            border-radius: 999px;
+            background: rgba(15, 23, 42, 0.1);
+            overflow: hidden;
+        }
+
+        .market-meter-fill {
+            width: 0;
+            height: 100%;
+            border-radius: inherit;
+            background: linear-gradient(90deg, #22c55e 0%, #16a34a 100%);
+            transition: width 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .market-card.animate-in .market-meter-fill {
+            width: var(--market-fill);
+        }
+
+        .market-insight {
+            font-size: 14px;
+            color: #334155;
+            line-height: 1.55;
+            margin-top: 2px;
+        }
+
+        .market-source {
+            margin-top: auto;
+            padding-top: 10px;
+            border-top: 1px solid rgba(6, 182, 212, 0.18);
+            font-size: 12px;
+            color: #0f766e;
+            font-weight: 600;
+            line-height: 1.45;
+        }
+
+        .market-hint {
+            margin: 12px auto 0;
+            font-size: 12px;
+            color: #64748b;
+            letter-spacing: 0.2px;
+            text-align: center;
+        }
+
+        /* ─── PROOF SLIDE LAYOUT ─── */
+        #slide-6 {
+            padding: 0 50px 146px;
+            align-items: center;
+            justify-content: flex-end;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .proof-people-img {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            opacity: 0.9;
+            pointer-events: none;
+        }
+
+        .proof-gradient {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(
+                to right,
+                rgba(245,245,240,0) 0%,
+                rgba(245,245,240,0.4) 42%,
+                rgba(245,245,240,0.80) 64%,
+                rgba(245,245,240,0.93) 82%,
+                rgba(245,245,240,0.97) 100%
+            );
+            pointer-events: none;
+        }
+
+        .proof-content {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            text-align: right;
+            max-width: 760px;
+            margin-left: auto;
+            width: min(1120px, 100%);
+            padding: 106px 5% 210px 0;
+            gap: 0;
+        }
+
+        .proof-stats {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 14px;
+            width: min(740px, 100%);
+        }
+
+        .proof-stats .stat-box {
+            min-width: 0;
+            padding: 24px 18px;
+            border-radius: 20px;
+        }
+
+        .proof-stats .stat-number {
+            font-size: clamp(34px, 3.9vw, 58px);
+        }
+
+        .proof-car-strip {
+            position: absolute;
+            left: 50%;
+            bottom: 90px;
+            transform: translateX(-50%);
+            width: min(1560px, calc(100vw - 78px));
+            z-index: 3;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            padding: 14px 16px;
+            border-radius: 20px;
+            border: 1px solid rgba(29,29,31,0.1);
+            background: rgba(245,245,240,0.88);
+            backdrop-filter: blur(10px);
+        }
+
+        .proof-car-row {
+            overflow: hidden;
+            width: 100%;
+        }
+
+        .proof-car-track {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            width: max-content;
+            will-change: transform;
+        }
+
+        .proof-car-fwd {
+            animation: proofMarqueeFwd 30s linear infinite;
+        }
+
+        .proof-car-rev {
+            animation: proofMarqueeRev 30s linear infinite;
+        }
+
+        .proof-car-strip:hover .proof-car-track {
+            animation-play-state: paused;
+        }
+
+        .proof-car-logo {
+            width: 156px;
+            height: 78px;
+            flex-shrink: 0;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 12px;
+            border-radius: 14px;
+            border: 1px solid rgba(255,255,255,0.2);
+            background: linear-gradient(180deg, rgba(255,255,255,0.97), rgba(247,247,242,0.95));
+            box-shadow: 0 6px 18px rgba(0,0,0,0.2);
+            transition: transform 0.25s cubic-bezier(0.16,1,0.3,1), box-shadow 0.25s ease;
+        }
+
+        .proof-car-logo:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 26px rgba(0,0,0,0.2);
+        }
+
+        .proof-car-logo img {
+            height: 40px;
+            max-width: 118px;
+            width: auto;
+            object-fit: contain;
+        }
+
+        /* ─── SLIDE DOTS ─── */
+        .slide-indicator {
+            position: fixed;
+            bottom: 28px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 8px;
+            z-index: 100;
+            background: rgba(0,0,0,0.2);
+            backdrop-filter: blur(8px);
+            padding: 8px 14px;
+            border-radius: 20px;
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.3);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .dot.active {
+            width: 28px;
+            border-radius: 4px;
+            background: linear-gradient(90deg, #F9D423 0%, #FFD700 100%);
+        }
+
+        /* ─── PROBLEM / PROPOSAL CARD GRIDS ─── */
+        .tri-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 22px;
+            max-width: 1050px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        .tri-card {
+            border-radius: 20px;
+            padding: 28px 22px;
+        }
+
+        .tri-card-light {
+            background: white;
+            box-shadow: 0 14px 36px rgba(0,0,0,0.07);
+        }
+
+        .tri-num {
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+
+        .tri-title {
+            font-size: 18px;
+            font-weight: 800;
+            margin-bottom: 10px;
+            line-height: 1.3;
+        }
+
+        .tri-desc {
+            font-size: 14px;
+            line-height: 1.6;
+            color: #6e6e73;
+        }
+
+        /* ─── ANIMATIONS ─── */
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50%       { transform: translateY(-8px); }
+        }
+
+        @keyframes proofMarqueeFwd {
+            from { transform: translateX(0); }
+            to   { transform: translateX(-50%); }
+        }
+
+        @keyframes proofMarqueeRev {
+            from { transform: translateX(-50%); }
+            to   { transform: translateX(0); }
+        }
+
+        @keyframes amberpulse {
+            0%, 100% { box-shadow: 0 12px 32px rgba(249,212,35,0.35); }
+            50%       { box-shadow: 0 16px 48px rgba(249,212,35,0.55); }
+        }
+
+        .float-anim { animation: float 4s ease-in-out infinite; }
+        .pulse-anim { animation: amberpulse 3s ease-in-out infinite; }
+
+        /* ─── AVATAR STRIP (cover) ─── */
+        .avatar-strip {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 24px;
+        }
+
+        .avatar-cluster {
+            display: flex;
+        }
+
+        .avatar-circle {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 700;
+            color: white;
+            border: 2px solid #F5F5F0;
+            margin-left: -8px;
+        }
+
+        .avatar-cluster .avatar-circle:first-child { margin-left: 0; }
+
+        .avatar-strip-label {
+            font-size: 13px;
+            color: #6e6e73;
+            font-weight: 500;
+            margin-left: 4px;
+        }
+
+        /* ─── PROBLEM MICRO-QUOTE ─── */
+        .micro-quote {
+            font-size: 15px;
+            font-style: italic;
+            color: #8e8e93;
+            text-align: center;
+            margin-bottom: 28px;
+            padding: 12px 24px;
+            background: rgba(239,68,68,0.06);
+            border-radius: 50px;
+            border: 1px solid rgba(239,68,68,0.15);
+        }
+
+        .tri-card-icon {
+            font-size: 22px;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        /* ─── HUMAN HIGHLIGHT CARD ─── */
+        .card-human-highlight {
+            background: rgba(249,212,35,0.06) !important;
+            box-shadow: 0 0 0 1px rgba(249,212,35,0.3), 0 14px 40px rgba(249,212,35,0.1) !important;
+        }
+
+        .card-pull-quote {
+            font-size: 13px;
+            font-style: italic;
+            color: #B8860B;
+            margin-top: 14px;
+            border-top: 1px solid rgba(249,212,35,0.35);
+            padding-top: 12px;
+            line-height: 1.5;
+        }
+
+        /* ─── CINEMATIC HUMAN MOMENT SLIDE ─── */
+        .human-bg-img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            filter: brightness(0.82) saturate(1.1);
+            pointer-events: none;
+        }
+
+        .human-bg-gradient {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(
+                to right,
+                rgba(245,245,240,0) 0%,
+                rgba(245,245,240,0.45) 42%,
+                rgba(245,245,240,0.85) 65%,
+                rgba(245,245,240,0.96) 82%,
+                rgba(245,245,240,0.99) 100%
+            );
+            pointer-events: none;
+        }
+
+        .human-quote-overlay {
+            position: relative;
+            z-index: 2;
+            max-width: 620px;
+            text-align: left;
+            margin-left: auto;
+            margin-right: clamp(28px, 7vw, 120px);
+            padding: 28px 34px 24px;
+            border-radius: 22px;
+            background: rgba(255,255,255,0.72);
+            border: 1px solid rgba(29,29,31,0.08);
+            backdrop-filter: blur(12px);
+            box-shadow: 0 20px 48px rgba(0,0,0,0.08);
+        }
+
+        .human-quote-text {
+            font-size: clamp(34px, 4.2vw, 64px);
+            font-weight: 800;
+            line-height: 1.15;
+            color: #1d1d1f;
+            margin: 0;
+        }
+
+        .human-accent {
+            width: 48px;
+            height: 4px;
+            background: linear-gradient(90deg, #F9D423, #FFD700);
+            border-radius: 2px;
+            margin: 20px 0;
+        }
+
+        .human-quote-sub {
+            font-size: 16px;
+            color: #8e8e93;
+            line-height: 1.6;
+            margin-top: 16px;
+        }
+
+        /* ─── EMPLOYEE QUOTE (wallet) ─── */
+        .employee-quote {
+            background: rgba(249,212,35,0.08);
+            border-left: 3px solid #F9D423;
+            border-radius: 0 12px 12px 0;
+            padding: 14px 18px;
+            margin-top: 18px;
+        }
+
+        .employee-quote-text {
+            font-size: 14px;
+            font-style: italic;
+            color: #6e6e73;
+            line-height: 1.55;
+        }
+
+        .employee-quote-attr {
+            font-size: 12px;
+            color: #9ca3af;
+            margin-top: 8px;
+        }
+
+        /* ─── RESPONSIVE — DESKTOP MÉDIO ─── */
+        @media (max-width: 900px) {
+            .tri-grid { grid-template-columns: 1fr; gap: 14px; }
+            .cover-layout { flex-direction: column; gap: 30px; }
+            .cover-img-wrap { width: 220px; }
+            .cover-highlight-btn { width: fit-content; }
+            .wallet-layout { flex-direction: column; gap: 30px; }
+            .wallet-img-wrap { width: min(92vw, 380px); }
+            .wallet-content { max-width: 100%; }
+            .cta-grid { flex-direction: column; }
+            .market-grid {
+                grid-template-columns: 1fr;
+                gap: 14px;
+                margin-top: 14px;
+            }
+            .market-card { min-height: auto; gap: 10px; }
+            .market-title { min-height: 0; }
+            .dash-content { grid-template-columns: 1fr; gap: 14px; }
+            .dash-img { max-height: 300px; }
+            .proof-content {
+                max-width: 100%;
+                text-align: center;
+                align-items: center;
+            }
+            .proof-content h2,
+            .proof-content h3 { text-align: center !important; }
+            .proof-stats {
+                width: 100%;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+            .proof-car-logo { width: 130px; height: 68px; border-radius: 12px; }
+            .proof-car-logo img { height: 34px; max-width: 95px; }
+            .human-quote-overlay {
+                max-width: min(94vw, 640px);
+                margin-right: 0;
+                margin-left: auto;
+                padding: 20px 20px 18px;
+            }
+            .human-quote-text { font-size: clamp(30px, 7.4vw, 52px); line-height: 1.12; }
+        }
+
+        /* ─── MOBILE — PÁGINA ÚNICA SCROLLÁVEL ─── */
+        @media (max-width: 768px) {
+
+            /* Body e html: scroll normal */
+            html, body {
+                overflow: auto !important;
+                overflow-x: hidden !important;
+                height: auto !important;
+            }
+
+            /* Container: fluxo de coluna sem altura travada */
+            .presentation-container {
+                flex-direction: column !important;
+                height: auto !important;
+                transform: none !important;
+                transition: none !important;
+                will-change: auto !important;
+            }
+
+            /* Slides: altura automática, sem clips */
+            .slide {
+                min-width: 100vw;
+                width: 100vw;
+                height: auto !important;
+                min-height: 0 !important;
+                padding: 52px 22px 44px;
+                overflow: visible !important;
+            }
+
+            /* Ocultar pontos de navegação */
+            .slide-indicator { display: none !important; }
+
+            /* Revelar todo conteúdo animado imediatamente */
+            .fade-el {
+                opacity: 1 !important;
+                transform: none !important;
+                transition: none !important;
+            }
+            .seq-el {
+                opacity: 1 !important;
+                transform: none !important;
+                transition: none !important;
+                pointer-events: auto !important;
+            }
+            .seq-el.animate-out {
+                opacity: 1 !important;
+                transform: none !important;
+            }
+
+            /* ── Tipografia ── */
+            h1 { font-size: clamp(24px, 7vw, 36px) !important; }
+            h2 { font-size: clamp(17px, 5vw, 24px) !important; }
+            h3 { font-size: clamp(13px, 3.5vw, 16px) !important; }
+            .stat-number { font-size: clamp(26px, 7.5vw, 38px) !important; }
+            .market-number { font-size: clamp(28px, 8vw, 40px) !important; }
+
+            /* ── Cover ── */
+            .cover-layout { flex-direction: column; gap: 20px; align-items: center; }
+            .cover-text { text-align: center; }
+            .cover-text h1 { text-align: center; }
+            .cover-img-wrap { width: min(52vw, 200px); }
+            .cover-small-note { text-align: center; }
+            .avatar-strip { justify-content: center; }
+            .logo-img { height: 28px; margin-bottom: 18px; }
+
+            /* ── Cards de problema/proposta ── */
+            .tri-grid { grid-template-columns: 1fr; gap: 10px; }
+            .tri-card { padding: 18px 16px; }
+
+            /* ── Step-showcase: empilhar os 3 passos em sequência ── */
+            .step-showcase-slide { gap: 8px; }
+            .step-showcase {
+                position: static !important;
+                height: auto !important;
+                display: flex;
+                flex-direction: column;
+                gap: 20px;
+                width: 100%;
+            }
+            .step-panel {
+                position: static !important;
+                inset: auto !important;
+                flex-direction: column;
+                gap: 14px;
+                opacity: 1 !important;
+                transform: none !important;
+                pointer-events: auto !important;
+            }
+            .step-img-large {
+                flex: none;
+                max-width: 100%;
+                width: 100%;
+                height: 170px;
+                max-height: 170px;
+                object-fit: cover;
+                border-radius: 16px;
+            }
+            .step-content-panel { text-align: center; gap: 8px; }
+            .step-passo-badge { margin: 0 auto; }
+            .step-content-panel .step-title { font-size: clamp(17px, 5vw, 24px); }
+            .step-content-panel .step-desc { font-size: 13px; }
+            .step-hint { display: none; }
+            .step-progress { justify-content: center; }
+
+            /* ── Wallet ── */
+            .wallet-layout { flex-direction: column; gap: 18px; align-items: center; }
+            .wallet-img-wrap { width: min(78vw, 280px); }
+            .wallet-content { max-width: 100%; text-align: center; }
+            .wallet-content h2 { text-align: center !important; }
+            .badge-grid { max-width: 100%; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+            .badge-item { padding: 12px 6px; font-size: 11px; }
+            .badge-item .b-icon { font-size: 18px; }
+
+            /* ── Dashboard ── */
+            #slide-5 { padding: 52px 22px 44px !important; }
+            .dash-layout { gap: 14px; }
+            .dash-content { grid-template-columns: 1fr; gap: 14px; }
+            .dash-img { max-height: 210px; }
+            #slide-5 .check-list { gap: 9px; }
+            #slide-5 .check-item { padding: 11px 14px; font-size: 13px; min-height: 0; }
+
+            /* ── Market ── */
+            .market-slide { padding: 52px 22px 44px !important; justify-content: flex-start; align-items: stretch; }
+            .market-grid { grid-template-columns: 1fr; gap: 12px; margin-top: 12px; }
+            .market-card { padding: 16px 14px; gap: 8px; min-height: 0; }
+            .market-title { min-height: 0; }
+            .market-hint { display: none; }
+
+            /* ── Proof (#slide-6): layout em fluxo normal ── */
+            #slide-6 {
+                padding: 0 !important;
+                height: auto !important;
+                justify-content: flex-start !important;
+                align-items: stretch !important;
+                overflow: visible !important;
+            }
+            .proof-people-img {
+                position: relative !important;
+                width: 100%;
+                height: 220px;
+                object-fit: cover;
+                object-position: center top;
+                opacity: 1;
+            }
+            .proof-gradient { display: none !important; }
+            .proof-content {
+                position: relative !important;
+                z-index: 1;
+                max-width: 100%;
+                text-align: center;
+                align-items: center;
+                margin: 0;
+                padding: 28px 22px 20px;
+                gap: 16px;
+            }
+            .proof-content h2,
+            .proof-content h3 { text-align: center !important; }
+            .proof-stats {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 10px;
+                width: 100%;
+            }
+            .proof-stats .stat-box { padding: 18px 12px; border-radius: 16px; min-width: 0; }
+            .proof-car-strip {
+                position: relative !important;
+                left: auto !important;
+                bottom: auto !important;
+                transform: none !important;
+                width: 100% !important;
+                border-radius: 0 !important;
+                margin-top: 20px;
+                padding: 12px 10px;
+                gap: 8px;
+            }
+            .proof-car-logo { width: 104px; height: 54px; border-radius: 10px; }
+            .proof-car-logo img { height: 28px; max-width: 76px; }
+
+            /* ── Human moment: foto + quote empilhados ── */
+            #slide-human {
+                padding: 0 !important;
+                height: auto !important;
+                justify-content: flex-start !important;
+                align-items: stretch !important;
+                overflow: visible !important;
+            }
+            .human-bg-img {
+                position: relative !important;
+                width: 100%;
+                height: 210px;
+                object-fit: cover;
+                object-position: center top;
+                filter: brightness(0.9) saturate(1.1);
+            }
+            .human-bg-gradient { display: none !important; }
+            .human-quote-overlay {
+                position: relative !important;
+                z-index: 1;
+                max-width: 100%;
+                margin: 0;
+                border-radius: 0;
+                background: #F5F5F0;
+                border: none;
+                box-shadow: none;
+                backdrop-filter: none;
+                padding: 24px 22px 28px;
+            }
+            .human-quote-text { font-size: clamp(20px, 6vw, 30px); color: #1d1d1f; }
+            .human-quote-sub { font-size: 13px; margin-top: 12px; }
+            .human-accent { margin: 14px 0; }
+
+            /* ── CTA ── */
+            .cta-grid { flex-direction: column; gap: 14px; }
+            .cta-card-primary,
+            .cta-card-outline { padding: 24px 18px; }
+
+            /* ── Micro-quote ── */
+            .micro-quote { font-size: 13px; padding: 10px 14px; }
+
+            /* ── Separador visual entre slides ── */
+            .slide + .slide {
+                border-top: 1px solid rgba(29,29,31,0.07);
+            }
+        }
+
+        /* ─── EYEBROW & LEAD ─── */
+        .eyebrow {
+            display: inline-block;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 1.2px;
+            text-transform: uppercase;
+            color: #0891b2;
+            background: rgba(6,182,212,0.1);
+            padding: 6px 16px;
+            border-radius: 50px;
+            margin-bottom: 4px;
+        }
+
+        .lead {
+            font-size: clamp(15px, 1.7vw, 18px);
+            line-height: 1.65;
+            color: #3a3a3c;
+            max-width: 760px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        /* ─── INSIGHT BOX CONSULTIVO ─── */
+        .insight-box {
+            max-width: 860px;
+            width: 100%;
+            margin: 0 auto;
+            background: linear-gradient(135deg, rgba(249,212,35,0.05) 0%, #ffffff 100%);
+            border: 1px solid rgba(249,212,35,0.22);
+            border-left: 4px solid #F9D423;
+            border-radius: 16px;
+            padding: 18px 24px;
+            display: flex;
+            gap: 16px;
+            align-items: center;
+            box-shadow: 0 4px 16px rgba(249,212,35,0.07);
+        }
+
+        .insight-icon {
+            font-size: 28px;
+            flex-shrink: 0;
+            line-height: 1;
+        }
+
+        .insight-content h4 {
+            font-size: 14px;
+            font-weight: 800;
+            color: #1d1d1f;
+            margin: 0 0 5px 0;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .insight-content p {
+            font-size: 14px;
+            line-height: 1.6;
+            color: #3a3a3c;
+            margin: 0;
+        }
+
+        /* ─── STRATEGIC BENEFITS GRID ─── */
+        .strategic-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            max-width: 1000px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        .strategic-card {
+            background: #ffffff;
+            border: 1px solid rgba(29,29,31,0.09);
+            border-radius: 14px;
+            padding: 18px 16px;
+            text-align: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+        }
+
+        .strategic-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.09);
+            border-color: rgba(249,212,35,0.35);
+        }
+
+        .strategic-icon {
+            font-size: 30px;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .strategic-card h5 {
+            font-size: 14px;
+            font-weight: 800;
+            color: #1d1d1f;
+            margin: 0 0 6px 0;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .strategic-card p {
+            font-size: 13px;
+            line-height: 1.55;
+            color: #6e6e73;
+            margin: 0;
+        }
+
+        /* ─── PILL LEGAL ─── */
+        .pill-legal {
+            background: rgba(34,197,94,0.1);
+            color: #16a34a;
+            border: 1px solid rgba(34,197,94,0.28);
+            box-shadow: none;
+            font-size: 13px;
+            padding: 8px 20px;
+        }
+
+        /* ─── WALLET PREVIEW IMAGES ─── */
+        .wallet-preview {
+            display: flex;
+            gap: 10px;
+            margin-top: 14px;
+        }
+
+        .wallet-preview-card {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+            background: white;
+            border-radius: 12px;
+            padding: 7px 7px 9px;
+            box-shadow: 0 6px 16px rgba(0,0,0,0.09);
+            border: 1px solid rgba(29,29,31,0.06);
+            overflow: hidden;
+        }
+
+        .wallet-preview-card img {
+            width: 100%;
+            height: 90px;
+            object-fit: cover;
+            object-position: top;
+            border-radius: 7px;
+        }
+
+        .wallet-preview-card span {
+            font-size: 10px;
+            font-weight: 700;
+            color: #6e6e73;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .cost-benefits {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 14px;
+        }
+
+        .benefit-mini {
+            background: rgba(249,212,35,0.08);
+            border: 1px solid rgba(249,212,35,0.25);
+            border-radius: 14px;
+            padding: 16px 14px;
+            text-align: center;
+        }
+
+        .benefit-mini strong {
+            display: block;
+            font-size: 14px;
+            font-weight: 800;
+            color: #1d1d1f;
+            margin-bottom: 4px;
+        }
+
+        .benefit-mini p {
+            font-size: 12px;
+            color: #6e6e73;
+            line-height: 1.5;
+            margin: 0;
+        }
+
+        /* ─── PROOF TECH STRIP ─── */
+        .proof-tech-strip {
+            position: absolute;
+            left: 50%;
+            bottom: 305px; /* sits just above the logo carousel (~194px tall at bottom:90px) */
+            transform: translateX(-50%);
+            width: min(1000px, calc(100vw - 78px));
+            z-index: 3;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 14px;
+        }
+
+        .tech-badge {
+            background: rgba(255,255,255,0.95);
+            border: 1px solid rgba(29,29,31,0.1);
+            border-radius: 14px;
+            padding: 16px 14px;
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+        }
+
+        .tech-icon { font-size: 26px; flex-shrink: 0; }
+
+        .tech-content strong {
+            display: block;
+            font-size: 13px;
+            font-weight: 800;
+            color: #1d1d1f;
+            margin-bottom: 3px;
+        }
+
+        .tech-content p {
+            font-size: 11px;
+            color: #6e6e73;
+            line-height: 1.5;
+            margin: 0;
+        }
+
+        /* ─── STEP BOT BADGE ─── */
+        .step-bot-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 5px 12px;
+            border-radius: 50px;
+            font-size: 11px;
+            font-weight: 700;
+            background: rgba(34, 197, 94, 0.1);
+            color: #16a34a;
+            border: 1px solid rgba(34,197,94,0.3);
+            width: fit-content;
+            margin-top: 4px;
+        }
+
+        .step-mech-icons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 6px;
+        }
+
+        .step-mech-icon {
+            font-size: 11px;
+            font-weight: 600;
+            color: #6e6e73;
+            background: rgba(29,29,31,0.06);
+            padding: 4px 10px;
+            border-radius: 50px;
+            border: 1px solid rgba(29,29,31,0.08);
+        }
+
+        /* ─── FEATURE IMAGE CAROUSEL (wallet slide) ─── */
+        .feature-carousel {
+            position: relative;
+            width: min(50vw, 520px);
+            height: min(64vh, 520px);
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 28px 64px rgba(0,0,0,0.28);
+            flex-shrink: 0;
+        }
+
+        .feature-slide {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            transition: opacity 0.85s cubic-bezier(0.4, 0, 0.2, 1);
+            pointer-events: none;
+        }
+
+        .feature-slide.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .feature-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            object-position: center;
+            padding: 14px;
+        }
+
+        .carousel-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.65) 0%, transparent 100%);
+            padding: 32px 18px 14px;
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            pointer-events: none;
+        }
+
+        .carousel-label {
+            font-size: 13px;
+            font-weight: 700;
+            color: white;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+        }
+
+        .carousel-dots-strip {
+            display: flex;
+            gap: 6px;
+            pointer-events: auto;
+        }
+
+        .c-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.35);
+            border: none;
+            cursor: pointer;
+            transition: all 0.35s ease;
+            padding: 0;
+        }
+
+        .c-dot.active {
+            background: #F9D423;
+            width: 20px;
+            border-radius: 4px;
+        }
+
+        @media (max-width: 900px) {
+            .feature-carousel {
+                width: min(82vw, 360px);
+                height: 280px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .feature-carousel {
+                width: min(88vw, 340px);
+                height: 240px;
+                border-radius: 16px;
+                margin: 0 auto;
+            }
+        }
+
+        @media (max-width: 900px) {
+            .cost-grid { grid-template-columns: 1fr; gap: 14px; }
+            .cost-benefits { grid-template-columns: 1fr; gap: 10px; }
+            .savings-number { font-size: 52px; }
+            .proof-tech-strip {
+                grid-template-columns: 1fr;
+                gap: 10px;
+                bottom: auto;
+                position: relative;
+                left: auto;
+                transform: none;
+                width: 100%;
+                margin: 20px auto 0;
+            }
+        }
+
+        @media (max-width: 768px) {
+            #slide-financial { padding: 52px 22px 60px !important; height: auto !important; gap: 16px !important; }
+            .insight-box { flex-direction: column; gap: 12px; padding: 20px 18px; }
+            .strategic-grid { grid-template-columns: 1fr; gap: 12px; }
+            .strategic-card { padding: 18px 16px; }
+            .proof-tech-strip { display: none; }
+        }
+
+        @media (max-height: 700px) and (min-width: 769px) {
+            .slide { padding: 50px 60px 70px; }
+            h2 { font-size: clamp(18px, 2.5vw, 28px) !important; }
+            .stat-number { font-size: clamp(28px, 3.5vw, 42px) !important; }
+            #slide-5 { padding: 62px 48px 116px; }
+            .market-slide { padding: 60px 44px 118px; }
+            .market-card { padding: 18px 16px; }
+            .market-number { font-size: clamp(34px, 4vw, 50px); }
+            .dash-layout { gap: 14px; }
+            .dash-content { gap: 14px; }
+            .dash-img { max-height: 260px; }
+            #slide-6 { padding: 0 40px 128px; }
+            .proof-content { padding: 56px 0 156px; }
+            .proof-car-strip { bottom: 74px; }
+            .proof-tech-strip { bottom: 270px; }
+            #slide-human { padding: 0 40px 102px !important; }
+            .human-quote-overlay { max-width: 560px; }
+        }
+
+        /* ═══════════════════════════════════════════
+           FASE 1 — NOVA UI CHROME
+           ═══════════════════════════════════════════ */
+
+        /* Reserve top room for the chrome on every slide,
+           scaling with viewport so images never get clipped. */
+        :root {
+            --chrome-h: 46px;     /* chrome total height (meta + progress) */
+            --chrome-gap: 26px;   /* extra breathing room below chrome */
+        }
+        @media (max-height: 820px) { :root { --chrome-h: 40px; --chrome-gap: 20px; } }
+        @media (max-height: 700px) { :root { --chrome-h: 34px; --chrome-gap: 14px; } }
+        @media (max-height: 600px) { :root { --chrome-h: 30px; --chrome-gap: 10px; } }
+        @media (max-width: 768px)  { :root { --chrome-h: 34px; --chrome-gap: 12px; } }
+
+        /* Push every slide below the fixed chrome */
+        .slide { padding-top: calc(var(--chrome-h) + var(--chrome-gap)) !important; }
+
+        /* —— Body texture: subtle grain over the cream —— */
+        .bg-grain {
+            position: fixed;
+            inset: 0;
+            z-index: 1;
+            pointer-events: none;
+            opacity: 0.45;
+            mix-blend-mode: multiply;
+            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' seed='3'/><feColorMatrix values='0 0 0 0 0.55  0 0 0 0 0.5  0 0 0 0 0.4  0 0 0 0.08 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+        }
+
+        /* —— Top chrome: chapter label + progress bar + counter —— */
+        .top-chrome {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 900;
+            pointer-events: none;
+            transition: opacity 0.4s ease;
+        }
+        /* Soft scrim so the chrome stays readable on top of any image */
+        .top-chrome::before {
+            content: '';
+            position: absolute;
+            inset: 0 0 auto 0;
+            height: calc(var(--chrome-h) + 28px);
+            background: linear-gradient(180deg,
+                rgba(245, 245, 240, 0.92) 0%,
+                rgba(245, 245, 240, 0.72) 55%,
+                rgba(245, 245, 240, 0) 100%);
+            pointer-events: none;
+            z-index: -1;
+        }
+        .top-chrome.hide-chapter .top-meta { opacity: 0; }
+
+        .top-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 36px 8px;
+            font-family: 'Inter', sans-serif;
+            color: #1d1d1f;
+            transition: opacity 0.5s ease;
+        }
+        @media (max-height: 700px) { .top-meta { padding: 9px 28px 5px; } }
+        @media (max-height: 600px) { .top-meta { padding: 6px 22px 4px; } }
+        .chapter-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            color: #6e6e73;
+        }
+        .chapter-label::before {
+            content: '';
+            display: block;
+            width: 26px;
+            height: 1px;
+            background: #C4972A;
+        }
+        .chapter-num {
+            color: #C4972A;
+            font-weight: 700;
+            margin-right: 2px;
+        }
+        .slide-counter {
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.16em;
+            color: #8e8e93;
+            font-variant-numeric: tabular-nums;
+            display: inline-flex;
+            align-items: baseline;
+            gap: 4px;
+        }
+        .slide-counter .cur {
+            color: #1d1d1f;
+            font-weight: 800;
+            font-size: 13px;
+        }
+        .slide-counter .sep { opacity: 0.45; }
+
+        .top-progress {
+            height: 2px;
+            width: 100%;
+            background: rgba(29,29,31,0.07);
+            overflow: hidden;
+        }
+        .top-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #C4972A 0%, #E5B547 100%);
+            width: 10%;
+            transition: width 0.65s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 0 10px rgba(196,151,42,0.45);
+        }
+
+        /* —— Browser-window chrome wrap (for product screenshots) —— */
+        .browser-frame {
+            position: relative;
+            background: linear-gradient(180deg, #ffffff 0%, #fbfaf6 100%);
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow:
+                0 1px 0 rgba(255,255,255,0.9) inset,
+                0 1px 2px rgba(29,29,31,0.06),
+                0 18px 50px -16px rgba(29,29,31,0.22),
+                0 4px 18px -8px rgba(29,29,31,0.10);
+            border: 1px solid rgba(29,29,31,0.08);
+        }
+        .browser-chrome {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 14px;
+            background: linear-gradient(180deg, #f3f1ec 0%, #ebe9e2 100%);
+            border-bottom: 1px solid rgba(29,29,31,0.08);
+        }
+        .browser-lights {
+            display: flex;
+            gap: 6px;
+        }
+        .browser-lights span {
+            width: 11px; height: 11px;
+            border-radius: 50%;
+            display: block;
+            box-shadow: inset 0 0 0 0.5px rgba(0,0,0,0.07);
+        }
+        .browser-lights span:nth-child(1) { background: #FF5F57; }
+        .browser-lights span:nth-child(2) { background: #FEBC2E; }
+        .browser-lights span:nth-child(3) { background: #28C840; }
+        .browser-url {
+            flex: 1;
+            height: 22px;
+            border-radius: 6px;
+            background: #ffffff;
+            border: 1px solid rgba(29,29,31,0.06);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 500;
+            color: #8e8e93;
+            letter-spacing: 0.02em;
+            font-family: -apple-system, 'SF Pro Text', 'Inter', sans-serif;
+            gap: 6px;
+        }
+        .browser-url-lock {
+            width: 8px; height: 8px;
+            border-radius: 2px;
+            background: #C4972A;
+            opacity: 0.6;
+        }
+        .browser-body {
+            line-height: 0;
+            background: #ffffff;
+        }
+        .browser-body img {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+
+        /* Step images inside browser frames (slide 4) */
+        .step-panel .browser-frame {
+            flex: 0 0 54%;
+            max-width: 54%;
+            align-self: center;
+        }
+        .step-panel .browser-frame .step-img-large {
+            max-width: 100%;
+            width: 100%;
+            flex: none;
+            border-radius: 0;
+            box-shadow: none;
+            border: none;
+        }
+        /* Dashboard image inside browser frame (slide 6) */
+        .dash-content .browser-frame {
+            width: 100%;
+            max-width: 100%;
+        }
+        .dash-content .browser-frame .dash-img {
+            box-shadow: none;
+            border: none;
+            border-radius: 0;
+            max-width: 100%;
+            max-height: none;
+        }
+
+        /* —— SVG icon base + per-context sizing —— */
+        .icn {
+            display: inline-block;
+            vertical-align: middle;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 1.6;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            flex-shrink: 0;
+        }
+        .tri-card-icon {
+            font-size: 0 !important;
+            line-height: 0 !important;
+            margin-bottom: 14px !important;
+            display: inline-flex;
+            width: 44px;
+            height: 44px;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            background: rgba(239, 68, 68, 0.08);
+            border: 1px solid rgba(239, 68, 68, 0.18);
+        }
+        .tri-card-icon .icn { width: 22px; height: 22px; color: #ef4444; stroke-width: 1.6; }
+        /* Green variant for solution cards (slide 3) */
+        #slide-2 .tri-card-icon {
+            background: rgba(34, 197, 94, 0.08);
+            border-color: rgba(34, 197, 94, 0.18);
+        }
+        #slide-2 .tri-card-icon .icn { color: #16a34a; }
+        .insight-icon {
+            font-size: 0 !important;
+            line-height: 0 !important;
+        }
+        .insight-icon .icn { width: 32px; height: 32px; color: #C4972A; }
+        .strategic-icon {
+            font-size: 0 !important;
+            line-height: 0 !important;
+            margin-bottom: 12px !important;
+            display: inline-flex;
+            width: 40px;
+            height: 40px;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            background: rgba(196, 151, 42, 0.10);
+            border: 1px solid rgba(196, 151, 42, 0.22);
+        }
+        .strategic-icon .icn { width: 22px; height: 22px; color: #C4972A; }
+        .b-icon {
+            font-size: 0 !important;
+            line-height: 0 !important;
+            display: inline-flex !important;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 6px;
+        }
+        .b-icon .icn { width: 22px; height: 22px; color: #1d1d1f; }
+        .badge-item:hover .b-icon .icn { color: #C4972A; }
+        .step-mech-icon {
+            display: inline-flex !important;
+            align-items: center;
+            gap: 5px;
+        }
+        .step-mech-icon .icn { width: 14px; height: 14px; color: #C4972A; }
+        .step-bot-badge {
+            display: inline-flex !important;
+            align-items: center;
+        }
+        .step-bot-badge .icn { width: 16px; height: 16px; color: #C4972A; margin-right: 8px; }
+
+        /* —— Refined nav dots (lower-key now that we have top progress) —— */
+        .slide-indicator {
+            background: rgba(255,255,255,0.55);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(29,29,31,0.06);
+            box-shadow: 0 4px 14px rgba(29,29,31,0.06);
+            padding: 9px 16px !important;
+        }
+
+        /* Mobile tweaks for new chrome */
+        @media (max-width: 768px) {
+            .top-meta { padding: 12px 18px 6px; }
+            .chapter-label { font-size: 10px; letter-spacing: 0.18em; gap: 8px; }
+            .chapter-label::before { width: 18px; }
+            .slide-counter { font-size: 10px; }
+            .slide-counter .cur { font-size: 12px; }
+            .browser-chrome { padding: 7px 10px; gap: 8px; }
+            .browser-lights span { width: 8px; height: 8px; }
+            .browser-url { height: 18px; font-size: 10px; }
+            .step-panel .browser-frame {
+                flex: none;
+                max-width: 100%;
+            }
+            .tri-card-icon { width: 36px; height: 36px; }
+            .tri-card-icon .icn { width: 18px; height: 18px; }
+            .strategic-icon { width: 34px; height: 34px; }
+            .strategic-icon .icn { width: 18px; height: 18px; }
+        }
+
+        /* ═══════════════════════════════════════════
+           FASE 2 — REESTRUTURAÇÃO
+           ═══════════════════════════════════════════ */
+
+        /* —— Slide 4: vertical step rail —————————————————————— */
+        .step-showcase {
+            display: grid !important;
+            grid-template-columns: 220px 1fr;
+            gap: 36px;
+            align-items: stretch;
+            height: 460px;
+            --rail-fill: 0;
+        }
+        .step-rail {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 22px 0;
+            align-items: flex-start;
+        }
+        .step-rail::before {
+            content: '';
+            position: absolute;
+            top: 44px;
+            bottom: 44px;
+            left: 22px;
+            width: 2px;
+            background: rgba(29,29,31,0.10);
+            border-radius: 2px;
+        }
+        .step-rail::after {
+            content: '';
+            position: absolute;
+            top: 44px;
+            left: 22px;
+            width: 2px;
+            height: calc(var(--rail-fill) * (100% - 88px));
+            background: linear-gradient(180deg, #C4972A 0%, #E5B547 100%);
+            border-radius: 2px;
+            transition: height 0.55s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 0 8px rgba(196,151,42,0.4);
+        }
+        .step-rail-node {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            cursor: default;
+        }
+        .step-rail-dot {
+            width: 46px;
+            height: 46px;
+            border-radius: 50%;
+            background: #ffffff;
+            border: 1.5px solid rgba(29,29,31,0.18);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Inter', sans-serif;
+            font-size: 13px;
+            font-weight: 800;
+            color: #8e8e93;
+            letter-spacing: 0.05em;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            flex-shrink: 0;
+            position: relative;
+            z-index: 1;
+            font-variant-numeric: tabular-nums;
+        }
+        .step-rail-node.done .step-rail-dot {
+            background: #ffffff;
+            border-color: #C4972A;
+            color: #C4972A;
+        }
+        .step-rail-node.done .step-rail-dot::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            box-shadow: 0 0 0 4px rgba(196,151,42,0.10);
+        }
+        .step-rail-node.active .step-rail-dot {
+            background: linear-gradient(135deg, #C4972A 0%, #E5B547 100%);
+            border-color: transparent;
+            color: #1d1d1f;
+            transform: scale(1.08);
+            box-shadow: 0 0 0 6px rgba(196,151,42,0.14), 0 6px 18px -4px rgba(196,151,42,0.4);
+        }
+        .step-rail-text {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+        .step-rail-kicker {
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            color: #8e8e93;
+            transition: color 0.4s ease;
+        }
+        .step-rail-label {
+            font-size: 14px;
+            font-weight: 700;
+            color: #8e8e93;
+            line-height: 1.2;
+            transition: color 0.4s ease;
+        }
+        .step-rail-node.done .step-rail-kicker,
+        .step-rail-node.done .step-rail-label { color: #1d1d1f; opacity: 0.7; }
+        .step-rail-node.active .step-rail-kicker { color: #C4972A; }
+        .step-rail-node.active .step-rail-label { color: #1d1d1f; }
+
+        .step-stage {
+            position: relative;
+            min-height: 0;
+            height: 100%;
+        }
+        .step-stage .step-panel {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            gap: 36px;
+        }
+        /* Restore phone-frame img sizing inside the new stage */
+        .step-stage .step-panel .browser-frame {
+            flex: 0 0 56%;
+            max-width: 56%;
+        }
+
+        /* —— Slide 4.5: editorial 2-col layout ———————————————— */
+        #slide-financial {
+            padding: 0 70px 60px !important;
+            padding-top: calc(var(--chrome-h) + var(--chrome-gap) + 12px) !important;
+            justify-content: center !important;
+            align-items: stretch !important;
+            gap: 0 !important;
+        }
+        .financial-editorial {
+            display: grid;
+            grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+            gap: 64px;
+            width: 100%;
+            max-width: 1180px;
+            margin: 0 auto;
+            align-items: center;
+            height: 100%;
+        }
+        .financial-col-left {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+            align-items: flex-start;
+            text-align: left;
+        }
+        .financial-col-left .eyebrow { margin: 0; }
+        .financial-col-left h2 {
+            text-align: left !important;
+            max-width: 100% !important;
+            margin: 0 !important;
+            font-size: clamp(32px, 3.6vw, 48px) !important;
+            line-height: 1.08 !important;
+            letter-spacing: -0.01em;
+        }
+        .financial-col-left .lead {
+            text-align: left !important;
+            margin: 0 !important;
+            max-width: 520px !important;
+            color: #6e6e73;
+            font-size: clamp(13px, 1.3vw, 15px) !important;
+            line-height: 1.65;
+        }
+        .financial-col-left .pill-legal-wrap { margin-top: 10px; }
+
+        /* Insight box restyled as serif citation */
+        .insight-box.is-citation {
+            display: block !important;
+            max-width: 100% !important;
+            width: 100% !important;
+            background: linear-gradient(180deg, #ffffff 0%, #fbfaf5 100%);
+            border: 1px solid rgba(196,151,42,0.22);
+            border-radius: 14px;
+            padding: 22px 26px 22px 56px !important;
+            position: relative;
+            box-shadow: 0 1px 0 rgba(255,255,255,0.7) inset, 0 6px 22px -10px rgba(29,29,31,0.08);
+        }
+        .insight-box.is-citation::before {
+            content: '';
+            position: absolute;
+            left: 22px;
+            top: 24px;
+            width: 22px;
+            height: 16px;
+            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 18' fill='%23C4972A'><path d='M0 18V8.5C0 3.8 3 .8 6.5 0L7.5 2.5C5 3.5 4 5 4 8h3.5V18H0zM13 18V8.5c0-4.7 3-7.7 6.5-8.5L20.5 2.5C18 3.5 17 5 17 8h3.5V18H13z'/></svg>");
+            background-size: contain;
+            background-repeat: no-repeat;
+            opacity: 0.55;
+        }
+        .insight-box.is-citation .insight-icon { display: none; }
+        .insight-box.is-citation .insight-content h4 {
+            font-family: 'Source Serif Pro', 'Newsreader', Georgia, 'Times New Roman', serif;
+            font-size: 17px;
+            font-weight: 600;
+            color: #1d1d1f;
+            margin-bottom: 8px;
+            letter-spacing: -0.005em;
+            line-height: 1.3;
+        }
+        .insight-box.is-citation .insight-content p {
+            font-family: 'Source Serif Pro', 'Newsreader', Georgia, 'Times New Roman', serif;
+            font-size: 14.5px;
+            line-height: 1.6;
+            color: #515154;
+            font-style: italic;
+        }
+        .insight-box.is-citation .insight-content p::after {
+            content: '';
+            display: block;
+            width: 36px;
+            height: 1px;
+            background: rgba(196,151,42,0.4);
+            margin-top: 12px;
+        }
+
+        /* Right column: strategic items as vertical list rows */
+        .strategic-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+            width: 100%;
+        }
+        .strategic-row {
+            display: grid;
+            grid-template-columns: 56px 1fr;
+            gap: 22px;
+            padding: 20px 0;
+            border-bottom: 1px solid rgba(29,29,31,0.07);
+            align-items: flex-start;
+        }
+        .strategic-row:first-child { padding-top: 4px; }
+        .strategic-row:last-child { border-bottom: none; }
+        .strategic-row .strategic-icon {
+            margin-bottom: 0 !important;
+            width: 44px;
+            height: 44px;
+        }
+        .strategic-row .strategic-icon .icn { width: 22px; height: 22px; }
+        .strategic-row h5 {
+            font-size: 16px;
+            font-weight: 800;
+            color: #1d1d1f;
+            margin: 0 0 6px;
+            letter-spacing: -0.005em;
+        }
+        .strategic-row p {
+            font-size: 13.5px;
+            line-height: 1.55;
+            color: #6e6e73;
+            margin: 0;
+        }
+
+        /* —— Slide 5: bento mosaic ————————————————————————————— */
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-auto-rows: minmax(72px, auto);
+            gap: 8px;
+            width: 100%;
+            max-width: 460px;
+        }
+        .bento-item {
+            background: rgba(29,29,31,0.04);
+            border: 1px solid rgba(29,29,31,0.08);
+            border-radius: 14px;
+            padding: 14px 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            justify-content: flex-end;
+            align-items: flex-start;
+            color: #1d1d1f;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.01em;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            line-height: 1.2;
+        }
+        .bento-item:hover {
+            background: rgba(196,151,42,0.08);
+            border-color: rgba(196,151,42,0.30);
+            transform: translateY(-1px);
+        }
+        .bento-item .b-icon {
+            margin-bottom: 0;
+        }
+        .bento-item .b-icon .icn { width: 20px; height: 20px; color: #1d1d1f; transition: color 0.3s ease; }
+        .bento-item:hover .b-icon .icn { color: #C4972A; }
+        /* Featured large tile (PIX) */
+        .bento-item.is-featured {
+            grid-column: span 2;
+            grid-row: span 2;
+            background: linear-gradient(135deg, #1d1d1f 0%, #2a2a2c 100%);
+            color: #ffffff;
+            padding: 22px 20px;
+            border-color: rgba(196,151,42,0.4);
+        }
+        .bento-item.is-featured .b-icon .icn {
+            width: 36px;
+            height: 36px;
+            color: #C4972A;
+        }
+        .bento-item.is-featured .bento-label {
+            font-size: 22px;
+            font-weight: 800;
+            letter-spacing: -0.01em;
+            line-height: 1.1;
+        }
+        .bento-item.is-featured .bento-sub {
+            font-size: 11px;
+            font-weight: 500;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.55);
+            margin-top: -2px;
+        }
+        .bento-item.is-featured:hover {
+            background: linear-gradient(135deg, #1d1d1f 0%, #3a2e0e 100%);
+            transform: translateY(-1px);
+        }
+        .bento-label-tiny { font-size: 11.5px; }
+
+        /* —— Mobile (≤768px) — fall back to simpler layouts —————— */
+        @media (max-width: 768px) {
+            .step-showcase {
+                display: flex !important;
+                grid-template-columns: none;
+                height: auto !important;
+                gap: 0 !important;
+            }
+            .step-rail { display: none !important; }
+            .step-stage { height: auto; }
+            .step-stage .step-panel {
+                position: static !important;
+                inset: auto !important;
+            }
+            .step-stage .step-panel .browser-frame { flex: none; max-width: 100%; }
+
+            .financial-editorial {
+                grid-template-columns: 1fr;
+                gap: 24px;
+            }
+            #slide-financial { padding: 60px 22px 70px !important; }
+
+            .bento-grid { max-width: 100%; gap: 6px; }
+            .bento-item { font-size: 11px; padding: 10px 9px; }
+            .bento-item.is-featured { padding: 16px 14px; }
+            .bento-item.is-featured .b-icon .icn { width: 26px; height: 26px; }
+            .bento-item.is-featured .bento-label { font-size: 17px; }
+        }
+
+        /* Shorter viewports — compress rail */
+        @media (max-height: 720px) {
+            .step-showcase { height: 380px; grid-template-columns: 200px 1fr; gap: 28px; }
+            .step-rail-dot { width: 40px; height: 40px; font-size: 12px; }
+            .step-rail::before, .step-rail::after { left: 19px; top: 36px; }
+            .step-rail::before { bottom: 36px; }
+            .step-rail::after { height: calc(var(--rail-fill) * (100% - 72px)); }
+        }
+
+        /* ═══════════════════════════════════════════
+           FASE 3 — REFINO
+           ═══════════════════════════════════════════ */
+
+        /* —— Slide 6: dashboard com hotspots numerados —————————— */
+        .dash-content { position: relative; }
+        .dash-content .browser-frame { position: relative; }
+        .dash-content .browser-body { position: relative; }
+
+        .dash-marker {
+            position: absolute;
+            top: var(--y, 50%);
+            left: var(--x, 50%);
+            transform: translate(-50%, -50%);
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #C4972A 0%, #E5B547 100%);
+            color: #1d1d1f;
+            font-family: 'Inter', sans-serif;
+            font-size: 12px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow:
+                0 0 0 4px rgba(255,255,255,0.9),
+                0 0 0 6px rgba(196,151,42,0.18),
+                0 6px 16px -4px rgba(196,151,42,0.5);
+            z-index: 4;
+            letter-spacing: 0.04em;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: default;
+            font-variant-numeric: tabular-nums;
+        }
+        .dash-marker::before {
+            content: '';
+            position: absolute;
+            inset: -8px;
+            border-radius: 50%;
+            border: 1.5px solid rgba(196,151,42,0.35);
+            animation: dashMarkerPulse 2.8s ease-in-out infinite;
+            pointer-events: none;
+        }
+        .dash-marker.is-active,
+        .check-item:hover ~ .browser-frame .dash-marker.is-target,
+        .dash-marker.is-active {
+            transform: translate(-50%, -50%) scale(1.2);
+            box-shadow:
+                0 0 0 4px rgba(255,255,255,1),
+                0 0 0 8px rgba(196,151,42,0.4),
+                0 10px 28px -6px rgba(196,151,42,0.7);
+        }
+        @keyframes dashMarkerPulse {
+            0%, 100% { transform: scale(1); opacity: 0.7; }
+            50%      { transform: scale(1.35); opacity: 0; }
+        }
+
+        /* Checklist item with numbered chip */
+        #slide-5 .check-item {
+            cursor: default;
+            transition: background 0.25s ease, border-color 0.25s ease;
+        }
+        #slide-5 .check-item.is-active,
+        #slide-5 .check-item:hover {
+            background: linear-gradient(180deg, #ffffff 0%, #fffaf0 100%);
+            border-color: rgba(196,151,42,0.4) !important;
+        }
+        #slide-5 .check-num {
+            width: 30px;
+            height: 30px;
+            min-width: 30px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #1d1d1f 0%, #2a2a2c 100%);
+            color: #C4972A;
+            font-family: 'Inter', sans-serif;
+            font-size: 11px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            letter-spacing: 0.04em;
+            font-variant-numeric: tabular-nums;
+            margin-right: 14px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+            transition: transform 0.3s ease;
+        }
+        #slide-5 .check-item.is-active .check-num,
+        #slide-5 .check-item:hover .check-num {
+            transform: scale(1.08);
+            background: linear-gradient(135deg, #C4972A 0%, #E5B547 100%);
+            color: #1d1d1f;
+        }
+        /* Hide old check-dot in slide 6 since we use numbered chip */
+        #slide-5 .check-item .check-dot { display: none; }
+
+        /* —— Slide 7: visualizações diferenciadas por stat ————— */
+        .market-viz {
+            width: 100%;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .market-viz-donut {
+            width: 92px;
+            height: 92px;
+        }
+        .market-viz-donut svg {
+            width: 100%;
+            height: 100%;
+            transform: rotate(-90deg);
+        }
+        .market-viz-donut .vd-track {
+            fill: none;
+            stroke: rgba(29,29,31,0.08);
+            stroke-width: 9;
+        }
+        .market-viz-donut .vd-fill {
+            fill: none;
+            stroke: #C4972A;
+            stroke-width: 9;
+            stroke-linecap: round;
+            stroke-dasharray: 251.3; /* 2π·40 */
+            stroke-dashoffset: 251.3;
+            transition: stroke-dashoffset 1.1s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .market-card.animate-in .market-viz-donut .vd-fill {
+            stroke-dashoffset: calc(251.3 - (251.3 * var(--market-fill-num, 0.21)));
+        }
+        .market-viz-bar {
+            width: 100%;
+            display: flex;
+            align-items: flex-end;
+            gap: 8px;
+            height: 92px;
+            padding: 0 10px;
+        }
+        .market-viz-bar .vb-col {
+            flex: 1;
+            background: linear-gradient(180deg, rgba(29,29,31,0.10) 0%, rgba(29,29,31,0.06) 100%);
+            border-radius: 6px;
+            height: var(--h, 30%);
+            transition: height 0.9s cubic-bezier(0.4, 0, 0.2, 1);
+            transition-delay: var(--d, 0s);
+            position: relative;
+        }
+        .market-viz-bar .vb-col.is-hero {
+            background: linear-gradient(180deg, #C4972A 0%, #E5B547 100%);
+            box-shadow: 0 4px 14px -4px rgba(196,151,42,0.4);
+        }
+        .market-card:not(.animate-in) .market-viz-bar .vb-col { height: 4%; }
+        .market-viz-curve {
+            width: 100%;
+            height: 92px;
+        }
+        .market-viz-curve svg {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+        .market-viz-curve .vc-line {
+            fill: none;
+            stroke: #C4972A;
+            stroke-width: 2.4;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            stroke-dasharray: 240;
+            stroke-dashoffset: 240;
+            transition: stroke-dashoffset 1.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transition-delay: 0.15s;
+        }
+        .market-card.animate-in .market-viz-curve .vc-line { stroke-dashoffset: 0; }
+        .market-viz-curve .vc-area {
+            fill: rgba(196,151,42,0.14);
+            opacity: 0;
+            transition: opacity 0.7s ease 0.6s;
+        }
+        .market-card.animate-in .market-viz-curve .vc-area { opacity: 1; }
+        .market-viz-curve .vc-dot {
+            fill: #C4972A;
+            r: 0;
+            transition: r 0.4s ease 1.1s;
+        }
+        .market-card.animate-in .market-viz-curve .vc-dot { r: 4; }
+
+        /* hide the old meter when new viz exists */
+        .market-card:has(.market-viz) .market-meter { display: none; }
+
+        /* Source styling refinement */
+        .market-source {
+            font-style: italic;
+            letter-spacing: 0.04em;
+            font-variant-caps: small-caps;
+            font-size: 11px !important;
+            opacity: 0.7;
+        }
+
+        /* —— Slide 8: plano único contínuo ————————————————————— */
+        #slide-6 .proof-people-img {
+            opacity: 1;
+            width: 100% !important;
+        }
+        #slide-6 .proof-gradient {
+            background:
+                linear-gradient(180deg, rgba(20,15,10,0.20) 0%, rgba(20,15,10,0.05) 35%, rgba(20,15,10,0.55) 80%, rgba(20,15,10,0.85) 100%),
+                linear-gradient(90deg, rgba(20,15,10,0.55) 0%, rgba(20,15,10,0.20) 45%, rgba(20,15,10,0.10) 100%);
+        }
+        #slide-6 .proof-content {
+            align-items: flex-end;
+            text-align: right;
+            color: #fff;
+            padding: 120px 5% 210px 0;
+            max-width: none;
+            margin-left: auto;
+        }
+        #slide-6 .proof-content h2 {
+            background: none !important;
+            -webkit-text-fill-color: #ffffff !important;
+            color: #ffffff !important;
+            background-clip: initial !important;
+            text-shadow: 0 2px 24px rgba(0,0,0,0.4);
+        }
+        #slide-6 .proof-content h2 .gold {
+            color: #F4C95D !important;
+            -webkit-text-fill-color: #F4C95D !important;
+        }
+        #slide-6 .proof-content h3 {
+            color: rgba(255,255,255,0.78) !important;
+            text-shadow: 0 1px 12px rgba(0,0,0,0.4);
+        }
+        /* Stats as documentary lower-third — no card chrome */
+        #slide-6 .proof-stats {
+            background: transparent;
+            display: flex;
+            justify-content: flex-end;
+            align-items: stretch;
+            gap: 0;
+            width: auto;
+            margin-left: auto;
+        }
+        #slide-6 .proof-stats .stat-box {
+            background: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
+            padding: 4px 26px;
+            border-right: 1px solid rgba(255,255,255,0.22);
+            border-radius: 0;
+            text-align: right;
+            min-width: 0;
+        }
+        #slide-6 .proof-stats .stat-box:last-child {
+            border-right: none;
+            padding-right: 0;
+        }
+        #slide-6 .proof-stats .stat-number {
+            color: #ffffff !important;
+            font-weight: 900 !important;
+            font-size: clamp(30px, 3.4vw, 46px) !important;
+            line-height: 1 !important;
+            letter-spacing: -0.01em;
+            text-shadow: 0 2px 18px rgba(0,0,0,0.35);
+        }
+        #slide-6 .proof-stats .stat-number[style*="B8860B"] { color: #F4C95D !important; }
+        #slide-6 .proof-stats .stat-number[style*="22c55e"] { color: #6EE7A2 !important; }
+        #slide-6 .proof-stats .stat-number[style*="3b82f6"] { color: #93C5FD !important; }
+        #slide-6 .proof-stats .stat-label {
+            color: rgba(255,255,255,0.7) !important;
+            font-size: 11px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            margin-top: 8px;
+        }
+        /* Logo strip integrated — grayscale, no card */
+        #slide-6 .proof-car-strip {
+            background: linear-gradient(180deg, rgba(20,15,10,0) 0%, rgba(20,15,10,0.6) 60%, rgba(20,15,10,0.85) 100%);
+            border: none;
+            backdrop-filter: none;
+            -webkit-backdrop-filter: none;
+            padding: 32px 16px 22px;
+            border-radius: 0;
+            width: 100vw;
+            left: 0;
+            transform: none;
+            bottom: 0;
+            gap: 6px;
+        }
+        #slide-6 .proof-car-strip::before {
+            content: 'Confiam na E+';
+            display: block;
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 0.32em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.5);
+            text-align: center;
+            margin-bottom: 14px;
+        }
+        #slide-6 .proof-car-strip .proof-car-row:last-child { display: flex; }
+        #slide-6 .proof-car-logo img {
+            opacity: 0.95;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+        #slide-6 .proof-car-logo {
+            background: rgba(255,255,255,0.92);
+            padding: 8px 14px;
+            border-radius: 8px;
+            margin: 0 4px;
+        }
+        #slide-6 .proof-car-logo:hover img {
+            opacity: 1;
+            transform: scale(1.04);
+        }
+
+        /* Mobile overrides for Phase 3 */
+        @media (max-width: 768px) {
+            .dash-marker { width: 22px; height: 22px; font-size: 10px; }
+            .market-viz-donut { width: 76px; height: 76px; }
+            .market-viz-bar { height: 70px; }
+            .market-viz-curve { height: 70px; }
+            #slide-6 .proof-stats { flex-direction: row; flex-wrap: wrap; justify-content: center; }
+            #slide-6 .proof-stats .stat-box { padding: 8px 14px; border-right: none; }
+        }
+
+        /* ═══════════════════════════════════════════
+           FASE 4 — Chatbot embed + Modo Apresentar
+           ═══════════════════════════════════════════ */
+
+        /* —— CTA: open-bot launcher card (no iframe; embed was blocked) ———— */
+        #slide-8 { gap: 0; }
+        #slide-8 .cta-grid {
+            display: grid !important;
+            grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+            gap: 22px;
+            width: min(1120px, 100%);
+            margin: 0 auto;
+            align-items: stretch;
+        }
+        .cta-bot-launcher {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 22px;
+            background: linear-gradient(180deg, #1d1d1f 0%, #2a2a2c 100%);
+            border: 1px solid rgba(196,151,42,0.30);
+            border-radius: 22px;
+            padding: 30px 32px;
+            color: #f5f5f0;
+            text-decoration: none;
+            overflow: hidden;
+            box-shadow: 0 24px 60px -20px rgba(0,0,0,0.4);
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease, box-shadow 0.3s ease;
+            isolation: isolate;
+        }
+        .cta-bot-launcher::before {
+            content: '';
+            position: absolute;
+            top: -40%;
+            right: -20%;
+            width: 360px;
+            height: 360px;
+            background: radial-gradient(circle, rgba(196,151,42,0.22) 0%, rgba(196,151,42,0) 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
+        .cta-bot-launcher:hover {
+            transform: translateY(-2px);
+            border-color: rgba(196,151,42,0.55);
+            box-shadow: 0 32px 70px -22px rgba(0,0,0,0.5), 0 0 0 1px rgba(196,151,42,0.15);
+        }
+        .cta-bot-launcher > * { position: relative; z-index: 1; }
+        .cta-bot-head {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+        .cta-bot-avatar {
+            width: 52px;
+            height: 52px;
+            border-radius: 14px;
+            background: linear-gradient(135deg, #C4972A 0%, #E5B547 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            box-shadow: 0 8px 22px -6px rgba(196,151,42,0.45);
+        }
+        .cta-bot-avatar img {
+            width: 36px;
+            height: 36px;
+            object-fit: contain;
+        }
+        .cta-bot-meta {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.2;
+            gap: 2px;
+        }
+        .cta-bot-name {
+            font-size: 16px;
+            font-weight: 800;
+            color: #f5f5f0;
+            letter-spacing: -0.01em;
+        }
+        .cta-bot-status {
+            font-size: 11px;
+            font-weight: 600;
+            color: #8e8e93;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+        }
+        .cta-bot-status::before {
+            content: '';
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #22c55e;
+            box-shadow: 0 0 0 3px rgba(34,197,94,0.18);
+            animation: liveDot 1.6s ease-in-out infinite;
+        }
+        @keyframes liveDot {
+            0%, 100% { opacity: 1; }
+            50%      { opacity: 0.45; }
+        }
+        .cta-bot-hero {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .cta-bot-hero-title {
+            font-family: 'Montserrat', 'Inter', sans-serif;
+            font-size: clamp(22px, 2.4vw, 30px);
+            font-weight: 800;
+            line-height: 1.15;
+            color: #f5f5f0;
+            letter-spacing: -0.01em;
+            margin: 0;
+        }
+        .cta-bot-hero-title .gold {
+            color: #E5B547 !important;
+            -webkit-text-fill-color: #E5B547 !important;
+        }
+        .cta-bot-hero-desc {
+            font-size: 13.5px;
+            color: rgba(245,245,240,0.7);
+            line-height: 1.55;
+            max-width: 440px;
+            margin: 0;
+        }
+        .cta-bot-bullets {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .cta-bot-bullets li {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 13px;
+            color: rgba(245,245,240,0.85);
+            font-weight: 500;
+        }
+        .cta-bot-bullets li::before {
+            content: '';
+            width: 18px;
+            height: 18px;
+            background: rgba(196,151,42,0.18);
+            border: 1px solid rgba(196,151,42,0.40);
+            border-radius: 6px;
+            position: relative;
+            flex-shrink: 0;
+            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 14' fill='none' stroke='%23E5B547' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'><polyline points='3 7.5 6 10.5 11 4.5'/></svg>");
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: 11px 11px;
+        }
+        .cta-bot-cta {
+            display: inline-flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            background: linear-gradient(135deg, #C4972A 0%, #E5B547 100%);
+            color: #1d1d1f;
+            padding: 14px 18px 14px 22px;
+            border-radius: 14px;
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            font-weight: 800;
+            letter-spacing: -0.005em;
+            text-decoration: none;
+            box-shadow: 0 10px 26px -8px rgba(196,151,42,0.6);
+            transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease;
+            cursor: pointer;
+            width: 100%;
+        }
+        .cta-bot-launcher:hover .cta-bot-cta {
+            transform: translateY(-1px);
+            box-shadow: 0 14px 32px -8px rgba(196,151,42,0.75);
+        }
+        .cta-bot-cta-text {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.2;
+            text-align: left;
+        }
+        .cta-bot-cta-text strong {
+            font-size: 15px;
+            font-weight: 800;
+            letter-spacing: -0.01em;
+        }
+        .cta-bot-cta-text span {
+            font-size: 11px;
+            font-weight: 600;
+            color: rgba(29,29,31,0.65);
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin-top: 1px;
+        }
+        .cta-bot-cta-arrow {
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            background: rgba(29,29,31,0.18);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), background 0.25s ease;
+        }
+        .cta-bot-launcher:hover .cta-bot-cta-arrow {
+            background: rgba(29,29,31,0.28);
+            transform: translateX(4px);
+        }
+        .cta-bot-cta-arrow svg {
+            width: 18px;
+            height: 18px;
+            stroke: #1d1d1f;
+            fill: none;
+            stroke-width: 2.4;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        /* Contact column – compact */
+        #slide-8 .cta-card-outline {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 16px;
+            padding: 30px 26px;
+        }
+        .cta-secondary-qr {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 10px;
+            padding-top: 18px;
+            margin-top: 14px;
+            border-top: 1px solid rgba(29,29,31,0.08);
+        }
+        .cta-secondary-qr img {
+            width: 88px;
+            height: 88px;
+            border-radius: 8px;
+            background: white;
+            padding: 4px;
+            box-shadow: 0 4px 14px -4px rgba(0,0,0,0.12);
+        }
+        .cta-secondary-qr-label {
+            font-size: 11px;
+            font-weight: 600;
+            color: #8e8e93;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+        @media (max-width: 768px) {
+            #slide-8 .cta-grid { grid-template-columns: 1fr; }
+            .cta-bot-launcher { padding: 24px 22px; }
+            .cta-bot-hero-title { font-size: 20px; }
+        }
+
+        /* —— Modo Apresentar (fullscreen letterbox 16:9) ——————— */
+        .present-toggle {
+            position: fixed;
+            right: 18px;
+            bottom: 22px;
+            z-index: 1000;
+            background: rgba(255,255,255,0.7);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(29,29,31,0.08);
+            border-radius: 8px;
+            padding: 7px 12px 7px 10px;
+            font-family: 'Inter', sans-serif;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: #1d1d1f;
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            cursor: pointer;
+            transition: background 0.2s ease, transform 0.2s ease, opacity 0.2s ease;
+            opacity: 0.55;
+        }
+        .present-toggle:hover {
+            opacity: 1;
+            background: rgba(255,255,255,0.95);
+            transform: translateY(-1px);
+        }
+        .present-toggle svg {
+            width: 13px;
+            height: 13px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+        @media (max-width: 768px) {
+            .present-toggle { display: none; }
+        }
+
+        /* When presenting: ONLY in true fullscreen (so it never crops a normal window). */
+        body.is-presenting:fullscreen,
+        body.is-presenting:-webkit-full-screen,
+        :fullscreen body.is-presenting {
+            background: #000;
+        }
+        body.is-presenting:not(:fullscreen) .letterbox,
+        body.is-presenting:not(:-webkit-full-screen) .letterbox {
+            display: none !important;
+        }
+        body.is-presenting .present-toggle { color: #fff; background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.18); }
+        body.is-presenting .letterbox {
+            position: fixed;
+            background: #000;
+            z-index: 950;
+            pointer-events: none;
+        }
+        .letterbox { display: none; }
+        /* Wider than 16:9 → side bars; taller than 16:9 → top/bottom bars */
+        @media (min-aspect-ratio: 16/9) {
+            body.is-presenting:fullscreen .letterbox.lb-l,
+            :fullscreen body.is-presenting .letterbox.lb-l {
+                display: block;
+                top: 0; bottom: 0; left: 0;
+                width: calc((100vw - 100vh * 16 / 9) / 2);
+            }
+            body.is-presenting:fullscreen .letterbox.lb-r,
+            :fullscreen body.is-presenting .letterbox.lb-r {
+                display: block;
+                top: 0; bottom: 0; right: 0;
+                width: calc((100vw - 100vh * 16 / 9) / 2);
+            }
+        }
+        @media (max-aspect-ratio: 16/9) {
+            body.is-presenting:fullscreen .letterbox.lb-t,
+            :fullscreen body.is-presenting .letterbox.lb-t {
+                display: block;
+                left: 0; right: 0; top: 0;
+                height: calc((100vh - 100vw * 9 / 16) / 2);
+            }
+            body.is-presenting:fullscreen .letterbox.lb-b,
+            :fullscreen body.is-presenting .letterbox.lb-b {
+                display: block;
+                left: 0; right: 0; bottom: 0;
+                height: calc((100vh - 100vw * 9 / 16) / 2);
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Subtle paper-grain overlay for warmth -->
+<div class="bg-grain" aria-hidden="true"></div>
+
+<!-- Letterbox bars (visible only in presenting mode) -->
+<div class="letterbox lb-t"></div>
+<div class="letterbox lb-b"></div>
+<div class="letterbox lb-l"></div>
+<div class="letterbox lb-r"></div>
+
+<!-- Present-mode toggle (top-right) -->
+<button class="present-toggle" id="presentToggle" type="button" aria-label="Apresentar em tela cheia">
+    <svg viewBox="0 0 24 24"><path d="M4 9V5a1 1 0 0 1 1-1h4M4 15v4a1 1 0 0 0 1 1h4M20 9V5a1 1 0 0 0-1-1h-4M20 15v4a1 1 0 0 1-1 1h-4"/></svg>
+    <span id="presentLabel">Apresentar</span>
+</button>
+
+<!-- Top chrome: chapter label + slide counter + progress bar -->
+<div class="top-chrome hide-chapter" id="topChrome" aria-hidden="true">
+    <div class="top-meta">
+        <span class="chapter-label">
+            <span class="chapter-num" id="chapterNum">01</span>
+            <span id="chapterName">Problema</span>
+        </span>
+        <span class="slide-counter">
+            <span class="cur" id="slideCur">01</span>
+            <span class="sep">/</span>
+            <span>10</span>
+        </span>
+    </div>
+    <div class="top-progress"><div class="top-progress-fill" id="progressFill"></div></div>
+</div>
+
+<div class="presentation-container" id="presentation">
+
+    <!-- ═══════════════════════════════════════════
+         SLIDE 1 — COVER
+    ═══════════════════════════════════════════ -->
+    <div class="slide slide-light" id="slide-0">
+        <div class="cover-layout">
+            <div class="cover-text">
+                <img src="assets/logo.png" alt="E+ Wallet" class="logo-img fade-el" style="transition-delay:0.05s">
+                <h1 class="fade-el" style="transition-delay:0.15s">Campanhas de incentivo que <span class="gold">funcionam de verdade</span>.</h1>
+                <p class="cover-small-note fade-el" style="transition-delay:0.25s">Sem complicar a operação.</p>
+                <div class="cover-highlight-btn fade-el" style="transition-delay:0.35s">A plataforma all-in-one</div>
+
+                <div class="avatar-strip fade-el" style="transition-delay:0.55s">
+                    <div class="avatar-cluster">
+                        <div class="avatar-circle" style="background:linear-gradient(135deg,#F9D423,#FFD700)">CA</div>
+                        <div class="avatar-circle" style="background:linear-gradient(135deg,#22c55e,#16a34a)">MR</div>
+                        <div class="avatar-circle" style="background:linear-gradient(135deg,#3b82f6,#2563eb)">FS</div>
+                        <div class="avatar-circle" style="background:linear-gradient(135deg,#a855f7,#7c3aed)">LP</div>
+                        <div class="avatar-circle" style="background:linear-gradient(135deg,#ec4899,#db2777)">TG</div>
+                    </div>
+                    <span class="avatar-strip-label">+100 mil pessoas premiadas</span>
+                </div>
+            </div>
+            <div class="cover-img-wrap fade-el float-anim" style="transition-delay:0.35s">
+                <img src="assets/celular.png" alt="E+ Wallet App" class="cover-img">
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════
+         SLIDE 2 — PROBLEMA
+    ═══════════════════════════════════════════ -->
+    <div class="slide slide-light" id="slide-1">
+        <h2 class="fade-el" style="transition-delay:0.1s">Três <span class="gold">gargalos</span> que toda campanha esbarra.</h2>
+        <h3 class="fade-el" style="transition-delay:0.2s">Você já passou por isso.</h3>
+
+        <p class="micro-quote fade-el" style="transition-delay:0.3s">“Lançamos a campanha. Mas o engajamento ficou bem abaixo do esperado.”</p>
+
+        <div class="tri-grid">
+            <div class="tri-card tri-card-light card-red seq-el">
+                <span class="tri-card-icon" data-icon="fragments"></span>
+                <div class="tri-num" style="color:#ef4444">Gargalo 01</div>
+                <div class="tri-title" style="color:#1d1d1f">Operação fragmentada</div>
+                <div class="tri-desc">Muitos fornecedores, muitos fluxos, e pouca agilidade pra colocar campanha no ar.</div>
+            </div>
+            <div class="tri-card tri-card-light card-red seq-el">
+                <span class="tri-card-icon" data-icon="eye-off"></span>
+                <div class="tri-num" style="color:#ef4444">Gargalo 02</div>
+                <div class="tri-title" style="color:#1d1d1f">Sem visibilidade real</div>
+                <div class="tri-desc">Você só descobre o que está funcionando quando já é tarde.</div>
+            </div>
+            <div class="tri-card tri-card-light card-red seq-el">
+                <span class="tri-card-icon" data-icon="trending-down"></span>
+                <div class="tri-num" style="color:#ef4444">Gargalo 03</div>
+                <div class="tri-title" style="color:#1d1d1f">Premiação que não engaja</div>
+                <div class="tri-desc">Quando o resgate é difícil ou o prêmio é genérico, o esforço da campanha vai pelo ralo.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════
+         SLIDE 3 — PROPOSTA
+    ═══════════════════════════════════════════ -->
+    <div class="slide slide-light" id="slide-2">
+        <h2 class="fade-el" style="transition-delay:0.1s">Uma plataforma. <span class="gold">Três resultados</span>.</h2>
+        <h3 class="fade-el" style="transition-delay:0.2s; margin-bottom:30px">Uma resposta pra cada um deles.</h3>
+
+        <div class="tri-grid">
+            <div class="tri-card tri-card-light seq-el" style="border-left:4px solid #22c55e">
+                <div class="tri-num" style="color:#22c55e">Resultado 01</div>
+                <div class="tri-title">Lançamento mais rápido</div>
+                <div class="tri-desc">Do briefing à campanha no ar. Sem retrabalho e sem idas e vindas.</div>
+            </div>
+            <div class="tri-card tri-card-light seq-el" style="border-left:4px solid #22c55e">
+                <div class="tri-num" style="color:#22c55e">Resultado 02</div>
+                <div class="tri-title">Controle em tempo real</div>
+                <div class="tri-desc">Tudo em um lugar. Dados, saldo, performance, comunicação.</div>
+            </div>
+            <div class="tri-card tri-card-light card-human-highlight seq-el" style="border-left:4px solid #F9D423">
+                <div class="tri-num" style="color:#B8860B">Resultado 03</div>
+                <div class="tri-title">Premiação que o colaborador valoriza</div>
+                <div class="tri-desc">Ele decide como usar. E isso muda tudo.</div>
+                <div class="card-pull-quote">“Ele contou pro colega. Isso não tem preço.”</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════
+         SLIDE 4 — COMO FUNCIONA
+    ═══════════════════════════════════════════ -->
+    <div class="slide slide-light step-showcase-slide" id="slide-3">
+        <h2 class="fade-el" style="transition-delay:0.1s"><span class="gold">Simples</span> para quem cria. <span class="gold">Claro</span> para quem recebe.</h2>
+        <h3 class="fade-el" style="transition-delay:0.18s">Três passos do briefing ao resgate.</h3>
+
+        <div class="step-showcase">
+            <!-- Vertical rail (Fase 2) -->
+            <aside class="step-rail" id="stepRail">
+                <div class="step-rail-node" data-step="0">
+                    <span class="step-rail-dot">01</span>
+                    <div class="step-rail-text">
+                        <span class="step-rail-kicker">Passo</span>
+                        <span class="step-rail-label">Criar</span>
+                    </div>
+                </div>
+                <div class="step-rail-node" data-step="1">
+                    <span class="step-rail-dot">02</span>
+                    <div class="step-rail-text">
+                        <span class="step-rail-kicker">Passo</span>
+                        <span class="step-rail-label">Automatizar</span>
+                    </div>
+                </div>
+                <div class="step-rail-node" data-step="2">
+                    <span class="step-rail-dot">03</span>
+                    <div class="step-rail-text">
+                        <span class="step-rail-kicker">Passo</span>
+                        <span class="step-rail-label">Resgatar</span>
+                    </div>
+                </div>
+            </aside>
+
+            <div class="step-stage">
+            <!-- Passo 1 -->
+            <div class="step-panel seq-el">
+                <div class="browser-frame">
+                    <div class="browser-chrome">
+                        <div class="browser-lights"><span></span><span></span><span></span></div>
+                        <div class="browser-url"><span class="browser-url-lock"></span>admin.emaiswallet.com.br / campanhas</div>
+                    </div>
+                    <div class="browser-body">
+                        <img src="assets/criacao de campanhas.png" alt="Criação de campanhas" class="step-img-large">
+                    </div>
+                </div>
+                <div class="step-content-panel">
+                    <div class="step-passo-badge">Passo 1 de 3</div>
+                    <div class="step-title">Crie com a sua cara</div>
+                    <div class="step-desc">Define a mecânica, o público e as regras.<br>White label completo: sua marca, seu domínio, você edita pelo admin.</div>
+                    <div class="step-bot-badge"><span data-icon="sparkles"></span>Bot de criação disponível</div>
+                    <div class="step-progress">
+                        <div class="step-progress-dot active" style="width:22px"></div>
+                        <div class="step-progress-dot" style="width:7px"></div>
+                        <div class="step-progress-dot" style="width:7px"></div>
+                        <span class="step-hint">Pressione espaço para continuar</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Passo 2 -->
+            <div class="step-panel seq-el">
+                <div class="browser-frame">
+                    <div class="browser-chrome">
+                        <div class="browser-lights"><span></span><span></span><span></span></div>
+                        <div class="browser-url"><span class="browser-url-lock"></span>admin.emaiswallet.com.br / automacao</div>
+                    </div>
+                    <div class="browser-body">
+                        <img src="assets/gestao de automacao.png" alt="Gestão e automação" class="step-img-large">
+                    </div>
+                </div>
+                <div class="step-content-panel">
+                    <div class="step-passo-badge">Passo 2 de 3</div>
+                    <div class="step-title">Automatize a operação</div>
+                    <div class="step-desc">Mensagens, tracking, pagamentos e mecânicas no mesmo lugar.<br>Quiz, sorteios, cadastro de vendas, cupom fiscal. Você configura.</div>
+                    <div class="step-mech-icons">
+                        <span class="step-mech-icon"><span data-icon="list-checks"></span>Quiz</span>
+                        <span class="step-mech-icon"><span data-icon="dice"></span>Sorteio</span>
+                        <span class="step-mech-icon"><span data-icon="bar-chart"></span>Vendas</span>
+                        <span class="step-mech-icon"><span data-icon="receipt"></span>Cupom</span>
+                    </div>
+                    <div class="step-progress">
+                        <div class="step-progress-dot" style="width:7px"></div>
+                        <div class="step-progress-dot active" style="width:22px"></div>
+                        <div class="step-progress-dot" style="width:7px"></div>
+                        <span class="step-hint">Pressione espaço para continuar</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Passo 3 -->
+            <div class="step-panel seq-el">
+                <div class="browser-frame">
+                    <div class="browser-chrome">
+                        <div class="browser-lights"><span></span><span></span><span></span></div>
+                        <div class="browser-url"><span class="browser-url-lock"></span>app.emaiswallet.com.br / resgate</div>
+                    </div>
+                    <div class="browser-body">
+                        <img src="assets/resgate de premios.png" alt="Resgate de prêmios" class="step-img-large" onerror="this.src='assets/human-reward-moment.jpg'">
+                    </div>
+                </div>
+                <div class="step-content-panel">
+                    <div class="step-passo-badge">Passo 3 de 3</div>
+                    <div class="step-title">Entregue o resgate com liberdade</div>
+                    <div class="step-desc">Pix, gift cards, produtos, pagamento de contas.<br>Quem foi premiado decide.</div>
+                    <div class="step-progress">
+                        <div class="step-progress-dot" style="width:7px"></div>
+                        <div class="step-progress-dot" style="width:7px"></div>
+                        <div class="step-progress-dot active" style="width:22px"></div>
+                    </div>
+                </div>
+            </div>
+            </div><!-- /step-stage -->
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════
+         SLIDE 4.5 — IMPACTO FINANCEIRO
+    ═══════════════════════════════════════════ -->
+    <div class="slide slide-light" id="slide-financial">
+        <div class="financial-editorial">
+
+            <!-- LEFT: argument + legal citation -->
+            <div class="financial-col-left">
+                <span class="eyebrow fade-el" style="transition-delay:0.05s">Gestão estratégica de pessoas</span>
+
+                <h2 class="fade-el" style="transition-delay:0.15s">
+                    Reconhecer <span class="gold">não é o mesmo</span> que remunerar.
+                </h2>
+
+                <p class="lead fade-el" style="transition-delay:0.25s">
+                    A lei brasileira separa o que é contraprestação de serviço do que é reconhecimento por performance. Poucas empresas usam essa diferença a favor.
+                </p>
+
+                <div class="insight-box is-citation fade-el" style="transition-delay:0.35s">
+                    <div class="insight-icon" data-icon="scale"></div>
+                    <div class="insight-content">
+                        <h4>O princípio da diferenciação na CLT</h4>
+                        <p>
+                            Prêmios pagos por desempenho não têm natureza salarial. Não integram o contrato de trabalho e, portanto, não incidem encargos salariais. (CLT, art. 457).
+                        </p>
+                    </div>
+                </div>
+
+                <div class="pill-legal-wrap fade-el" style="transition-delay:0.55s">
+                    <span class="pill pill-legal">Fundamentado na CLT, art. 457 · Aplicação validada juridicamente</span>
+                </div>
+            </div>
+
+            <!-- RIGHT: strategic benefits as a list -->
+            <div class="strategic-list fade-el" style="transition-delay:0.45s">
+
+                <div class="strategic-row">
+                    <span class="strategic-icon" data-icon="target"></span>
+                    <div>
+                        <h5>Flexibilidade tática</h5>
+                        <p>Ativa ou encerra campanhas por ciclo, sem gerar passivo trabalhista e sem compromisso de recorrência.</p>
+                    </div>
+                </div>
+
+                <div class="strategic-row">
+                    <span class="strategic-icon" data-icon="shield"></span>
+                    <div>
+                        <h5>Governança financeira</h5>
+                        <p>Verba específica, rastreável e auditada. Não contamina a folha e não cria histórico remuneratório.</p>
+                    </div>
+                </div>
+
+                <div class="strategic-row">
+                    <span class="strategic-icon" data-icon="trending-up"></span>
+                    <div>
+                        <h5>Mais impacto, mesmo orçamento</h5>
+                        <p>Bem estruturado, você investe mais em reconhecimento sem inflar o custo total com pessoas.</p>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════
+         SLIDE 5 — CARTEIRA DO PREMIADO
+    ═══════════════════════════════════════════ -->
+    <div class="slide slide-light" id="slide-4">
+        <div class="wallet-layout">
+            <!-- LEFT: Feature image carousel -->
+            <div class="feature-carousel fade-el" style="transition-delay:0.15s" id="feature-carousel">
+                <div class="feature-slide active">
+                    <img src="assets/pix.png" alt="PIX">
+                </div>
+                <div class="feature-slide">
+                    <img src="assets/pagamento.png" alt="Pagamentos">
+                </div>
+                <div class="feature-slide">
+                    <img src="assets/resgate de premios.png" alt="Resgate de Prêmios">
+                </div>
+                <div class="carousel-overlay">
+                    <div class="carousel-label" id="carousel-label">PIX</div>
+                    <div class="carousel-dots-strip">
+                        <button class="c-dot active" data-cidx="0" aria-label="PIX"></button>
+                        <button class="c-dot" data-cidx="1" aria-label="Pagamentos"></button>
+                        <button class="c-dot" data-cidx="2" aria-label="Resgate"></button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RIGHT: Content -->
+            <div class="wallet-content">
+                <h2 class="fade-el" style="transition-delay:0.1s; text-align:left"><span class="gold">44.000+ formas</span> de usar.<br>Quem recebe escolhe.</h2>
+                <p class="fade-el" style="transition-delay:0.2s; color:#8e8e93; font-size:14px; margin:12px 0 20px; line-height:1.6">Catálogo completo dos principais marketplaces e mais de 100 vales (Netflix, Spotify, C&amp;A, Carrefour, CVC, Outback). Transferências, boletos, recarga, produtos físicos e cartões pré-pagos.</p>
+
+                <div class="bento-grid fade-el" style="transition-delay:0.3s">
+                    <div class="bento-item is-featured">
+                        <span class="b-icon" data-icon="pix"></span>
+                        <span class="bento-sub">Pagamento instantâneo</span>
+                        <span class="bento-label">PIX</span>
+                    </div>
+                    <div class="bento-item">
+                        <span class="b-icon" data-icon="gift"></span>
+                        Gift Cards
+                    </div>
+                    <div class="bento-item">
+                        <span class="b-icon" data-icon="package"></span>
+                        44k+ Produtos
+                    </div>
+                    <div class="bento-item">
+                        <span class="b-icon" data-icon="receipt"></span>
+                        Boletos
+                    </div>
+                    <div class="bento-item">
+                        <span class="b-icon" data-icon="smartphone"></span>
+                        Recarga
+                    </div>
+                    <div class="bento-item">
+                        <span class="b-icon" data-icon="credit-card"></span>
+                        Cartão Pré-Pago
+                    </div>
+                    <div class="bento-item">
+                        <span class="b-icon" data-icon="bank"></span>
+                        Transferências
+                    </div>
+                    <div class="bento-item">
+                        <span class="b-icon" data-icon="ticket"></span>
+                        100+ Vales
+                    </div>
+                    <div class="bento-item">
+                        <span class="b-icon" data-icon="sparkles"></span>
+                        Prod. Autorais
+                    </div>
+                </div>
+
+                <div class="fade-el" style="margin-top:18px; transition-delay:0.45s">
+                    <span class="pill pill-amber">44.000+ produtos + 100+ vales + serviços financeiros</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════
+         SLIDE 6 — CONTROLE
+    ═══════════════════════════════════════════ -->
+    <div class="slide slide-light" id="slide-5">
+        <div class="dash-layout">
+            <div class="dash-head">
+                <h2 class="fade-el" style="transition-delay:0.1s"><span class="gold">Controle total</span>. Governança completa.</h2>
+                <h3 class="fade-el" style="transition-delay:0.18s">Dashboard, automação e trilha de auditoria.</h3>
+            </div>
+
+            <div class="dash-content">
+                <div class="browser-frame fade-el" style="transition-delay:0.28s">
+                    <div class="browser-chrome">
+                        <div class="browser-lights"><span></span><span></span><span></span></div>
+                        <div class="browser-url"><span class="browser-url-lock"></span>admin.emaiswallet.com.br / dashboard</div>
+                    </div>
+                    <div class="browser-body">
+                        <img src="assets/dashboard.png" alt="Dashboard E+ Wallet" class="dash-img">
+                        <!-- Numbered hotspot markers overlaid on dashboard regions -->
+                        <div class="dash-marker" data-num="1" style="--x: 14%; --y: 23%">01</div>
+                        <div class="dash-marker" data-num="2" style="--x: 15%; --y: 39%">02</div>
+                        <div class="dash-marker" data-num="3" style="--x: 50%; --y: 39%">03</div>
+                        <div class="dash-marker" data-num="4" style="--x: 75%; --y: 39%">04</div>
+                        <div class="dash-marker" data-num="5" style="--x: 28%; --y: 72%">05</div>
+                    </div>
+                </div>
+
+                <div class="check-list fade-el" style="transition-delay:0.42s">
+                    <div class="check-item" data-target="1">
+                        <div class="check-num">01</div>
+                        <div class="check-dot">✓</div>
+                        Dashboard em tempo real: participação, saldo, desempenho e ROI.
+                    </div>
+                    <div class="check-item" data-target="2">
+                        <div class="check-num">02</div>
+                        <div class="check-dot">✓</div>
+                        Automação de comunicação: SMS, email, banners e notificações internas.
+                    </div>
+                    <div class="check-item" data-target="3">
+                        <div class="check-num">03</div>
+                        <div class="check-dot">✓</div>
+                        Mecânicas configuráveis: quiz, sorteios, cadastro de vendas, cupom fiscal.
+                    </div>
+                    <div class="check-item" data-target="4">
+                        <div class="check-num">04</div>
+                        <div class="check-dot">✓</div>
+                        Trilha de auditoria completa: quem recebeu, quando, e como usou.
+                    </div>
+                    <div class="check-item" data-target="5">
+                        <div class="check-num">05</div>
+                        <div class="check-dot">✓</div>
+                        Relatórios executivos com o que funcionou e onde dá pra expandir.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════
+         SLIDE 7 — DADOS DE MERCADO
+    ═══════════════════════════════════════════ -->
+    <div class="slide slide-light market-slide" id="slide-market">
+        <div class="market-head">
+            <h2 class="fade-el" style="transition-delay:0.1s">Incentivo não é custo. <span class="gold">É performance</span>.</h2>
+            <h3 class="fade-el" style="transition-delay:0.2s">Três dados que ligam engajamento a resultado.</h3>
+        </div>
+
+        <div class="market-grid">
+            <div class="market-card seq-el" style="--market-fill:21%; --market-fill-num:0.21;">
+                <span class="market-kicker">Engajamento e lucro</span>
+                <div class="market-number" data-target="21" data-prefix="" data-suffix="%">0%</div>
+                <div class="market-title">das equipes altamente engajadas são mais lucrativas.</div>
+                <div class="market-viz market-viz-donut" aria-hidden="true">
+                    <svg viewBox="0 0 100 100">
+                        <circle class="vd-track" cx="50" cy="50" r="40"></circle>
+                        <circle class="vd-fill" cx="50" cy="50" r="40"></circle>
+                    </svg>
+                </div>
+                <div class="market-insight">Engajamento não é “soft”. Mexe direto no resultado financeiro da operação.</div>
+                <div class="market-source">Fonte: Gallup, State of the Global Workplace</div>
+            </div>
+
+            <div class="market-card seq-el" style="--market-fill:69%;">
+                <span class="market-kicker">Produtividade e retenção</span>
+                <div class="market-number" data-target="69" data-prefix="" data-suffix="%">0%</div>
+                <div class="market-title">trabalhariam mais se se sentissem mais reconhecidos.</div>
+                <div class="market-viz market-viz-bar" aria-hidden="true">
+                    <div class="vb-col"          style="--h: 24%; --d: 0s"></div>
+                    <div class="vb-col"          style="--h: 36%; --d: 0.08s"></div>
+                    <div class="vb-col"          style="--h: 50%; --d: 0.16s"></div>
+                    <div class="vb-col"          style="--h: 62%; --d: 0.24s"></div>
+                    <div class="vb-col is-hero"  style="--h: 92%; --d: 0.34s"></div>
+                </div>
+                <div class="market-insight">Reconhecimento puxa esforço extra e consistência no time.</div>
+                <div class="market-source">Fonte: Zippia</div>
+            </div>
+
+            <div class="market-card seq-el" style="--market-fill:44%;">
+                <span class="market-kicker">Vendas e resultado</span>
+                <div class="market-number" data-target="44" data-prefix="" data-suffix="%">0%</div>
+                <div class="market-title">de ganho potencial na performance com incentivos estruturados.</div>
+                <div class="market-viz market-viz-curve" aria-hidden="true">
+                    <svg viewBox="0 0 200 80" preserveAspectRatio="none">
+                        <path class="vc-area" d="M 0 64 L 30 58 L 60 50 L 100 38 L 140 22 L 180 12 L 200 8 L 200 80 L 0 80 Z"></path>
+                        <polyline class="vc-line" points="0,64 30,58 60,50 100,38 140,22 180,12 200,8"></polyline>
+                        <circle class="vc-dot" cx="200" cy="8"></circle>
+                    </svg>
+                </div>
+                <div class="market-insight">Campanha bem desenhada vira impacto mensurável em vendas.</div>
+                <div class="market-source">Fonte: Incentive Research Foundation</div>
+            </div>
+        </div>
+        <p class="market-hint fade-el" style="transition-delay:0.3s">Pressione espaço para revelar cada evidência.</p>
+    </div>
+
+    <!-- ═══════════════════════════════════════════
+         SLIDE 8 — PROVA DE MERCADO
+    ═══════════════════════════════════════════ -->
+    <div class="slide slide-light" id="slide-6">
+        <!-- Full-bleed team photo -->
+        <img src="assets/section 4.jpg" alt="Time celebrando" class="proof-people-img">
+        <div class="proof-gradient"></div>
+
+        <div class="proof-content">
+            <h2 class="fade-el" style="transition-delay:0.1s; text-align:right; margin-bottom:6px;">Mais de <span class="gold">300 empresas</span> já simplificaram a operação.</h2>
+            <h3 class="fade-el" style="transition-delay:0.18s; text-align:right; margin-bottom:28px;">Os números falam.</h3>
+
+            <div class="proof-stats fade-el" style="transition-delay:0.3s;">
+                <div class="stat-box">
+                    <div class="stat-number" style="color:#B8860B">+100 mil</div>
+                    <div class="stat-label">pessoas premiadas</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number" style="color:#22c55e">+R$ 85 mi</div>
+                    <div class="stat-label">distribuídos em premiações</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number" style="color:#3b82f6">+300</div>
+                    <div class="stat-label">empresas parceiras</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ── Two-row animated logo carousel ── -->
+        <div class="proof-car-strip fade-el" style="transition-delay:0.65s;">
+            <!-- Row 1 → scrolls left -->
+            <div class="proof-car-row">
+                <div class="proof-car-track proof-car-fwd">
+                    <span class="proof-car-logo"><img src="logos/aggile.png"      alt="Aggile"></span>
+                    <span class="proof-car-logo"><img src="logos/argali.png"      alt="Argali"></span>
+                    <span class="proof-car-logo"><img src="logos/assim saude.png" alt="Assim Saúde"></span>
+                    <span class="proof-car-logo"><img src="logos/barone.png"      alt="Barone"></span>
+                    <span class="proof-car-logo"><img src="logos/idealis.png"     alt="Idealis"></span>
+                    <span class="proof-car-logo"><img src="logos/jundu.png"       alt="Jundu"></span>
+                    <span class="proof-car-logo"><img src="logos/leve saude.png"  alt="Leve Saúde"></span>
+                    <!-- duplicate for seamless loop -->
+                    <span class="proof-car-logo" aria-hidden="true"><img src="logos/aggile.png"      alt=""></span>
+                    <span class="proof-car-logo" aria-hidden="true"><img src="logos/argali.png"      alt=""></span>
+                    <span class="proof-car-logo" aria-hidden="true"><img src="logos/assim saude.png" alt=""></span>
+                    <span class="proof-car-logo" aria-hidden="true"><img src="logos/barone.png"      alt=""></span>
+                    <span class="proof-car-logo" aria-hidden="true"><img src="logos/idealis.png"     alt=""></span>
+                    <span class="proof-car-logo" aria-hidden="true"><img src="logos/jundu.png"       alt=""></span>
+                    <span class="proof-car-logo" aria-hidden="true"><img src="logos/leve saude.png"  alt=""></span>
+                </div>
+            </div>
+            <!-- Row 2 → scrolls right -->
+            <div class="proof-car-row">
+                <div class="proof-car-track proof-car-rev">
+                    <span class="proof-car-logo"><img src="logos/mega moda.png"        alt="Mega Moda"></span>
+                    <span class="proof-car-logo"><img src="logos/multiedro.png"        alt="Multiedro"></span>
+                    <span class="proof-car-logo"><img src="logos/parzi.png"            alt="Parzi"></span>
+                    <span class="proof-car-logo"><img src="logos/qualivida.png"        alt="Qualivida"></span>
+                    <span class="proof-car-logo"><img src="logos/seculus.png"          alt="Seculus"></span>
+                    <span class="proof-car-logo"><img src="logos/segment.png"          alt="Segment"></span>
+                    <span class="proof-car-logo"><img src="logos/Stihl_Logo.svg.png"   alt="Stihl"></span>
+                    <!-- duplicate for seamless loop -->
+                    <span class="proof-car-logo" aria-hidden="true"><img src="logos/mega moda.png"       alt=""></span>
+                    <span class="proof-car-logo" aria-hidden="true"><img src="logos/multiedro.png"       alt=""></span>
+                    <span class="proof-car-logo" aria-hidden="true"><img src="logos/parzi.png"           alt=""></span>
+                    <span class="proof-car-logo" aria-hidden="true"><img src="logos/qualivida.png"       alt=""></span>
+                    <span class="proof-car-logo" aria-hidden="true"><img src="logos/seculus.png"         alt=""></span>
+                    <span class="proof-car-logo" aria-hidden="true"><img src="logos/segment.png"         alt=""></span>
+                    <span class="proof-car-logo" aria-hidden="true"><img src="logos/Stihl_Logo.svg.png"  alt=""></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════
+         SLIDE 10 — CTA
+    ═══════════════════════════════════════════ -->
+    <div class="slide slide-light" id="slide-8">
+        <img src="assets/logo.png" alt="E+ Wallet" class="logo-img fade-el" style="transition-delay:0.05s">
+
+        <h2 class="fade-el" style="transition-delay:0.15s">Comece <span class="gold">agora</span> pelo chatbot, ou fale com o time.</h2>
+        <h3 class="fade-el" style="transition-delay:0.22s; margin-bottom:24px">Sem formulário longo. Sem demo de 1 hora. Direto ao ponto.</h3>
+
+        <div class="cta-grid fade-el" style="transition-delay:0.35s">
+
+            <!-- LEFT — Bot launcher (click to open in new tab) -->
+            <a href="https://studio--ebot-22w20.us-central1.hosted.app/"
+               target="_blank"
+               rel="noopener noreferrer"
+               class="cta-bot-launcher">
+                <div class="cta-bot-head">
+                    <div class="cta-bot-avatar">
+                        <img src="assets/bot.png" alt="E+ Bot">
+                    </div>
+                    <div class="cta-bot-meta">
+                        <span class="cta-bot-name">E+ Bot · Criação de campanhas</span>
+                        <span class="cta-bot-status">Online · IA dedicada</span>
+                    </div>
+                </div>
+
+                <div class="cta-bot-hero">
+                    <h3 class="cta-bot-hero-title">Crie sua campanha <span class="gold">em minutos</span> com nossa IA.</h3>
+                    <p class="cta-bot-hero-desc">Uma conversa guiada que define mecânica, público, regras e premiação. Sem briefing, sem reunião.</p>
+                </div>
+
+                <ul class="cta-bot-bullets">
+                    <li>Conversa em linguagem natural, sem briefing</li>
+                    <li>Sugestões de mecânica e premiação feitas pro seu time</li>
+                    <li>Sua marca, seu domínio. White label completo.</li>
+                </ul>
+
+                <div class="cta-bot-cta">
+                    <span class="cta-bot-cta-text">
+                        <strong>Abrir o chatbot</strong>
+                        <span>Abre em nova aba</span>
+                    </span>
+                    <span class="cta-bot-cta-arrow" aria-hidden="true">
+                        <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+                    </span>
+                </div>
+            </a>
+
+            <!-- RIGHT — Contact + QR fallback -->
+            <div class="cta-card-outline">
+                <div>
+                    <div class="cta-card-title" style="color:#1d1d1f">Prefere conversar?</div>
+                    <div class="cta-card-desc">Escreve pra gente. Sem demos de 1 hora, direto ao ponto.</div>
+                    <div class="cta-contact-name" style="color:#1d1d1f">Leonardo Castanho<br><span style="font-weight:500; color:#8e8e93">Gerente E+ MKT</span></div>
+                    <a class="cta-email" id="ctaEmail" href="#" data-u="comercial" data-d="emaiswallet.com.br">carregando…</a>
+                </div>
+                <div class="cta-secondary-qr">
+                    <span class="cta-secondary-qr-label">Ou abra no celular</span>
+                    <img src="assets/tCWh9l.png" alt="QR Code para o chatbot">
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+<!-- Slide Dots -->
+<div class="slide-indicator" id="indicator">
+    <span class="dot active" data-idx="0"></span>
+    <span class="dot" data-idx="1"></span>
+    <span class="dot" data-idx="2"></span>
+    <span class="dot" data-idx="3"></span>
+    <span class="dot" data-idx="4"></span>
+    <span class="dot" data-idx="5"></span>
+    <span class="dot" data-idx="6"></span>
+    <span class="dot" data-idx="7"></span>
+    <span class="dot" data-idx="8"></span>
+    <span class="dot" data-idx="9"></span>
+</div>
+
+<script>
+    const TOTAL = 10;
+    let currentSlide = 0;
+    let animationStep = {}; // tracks sequential animation step per slide
+
+    // ═══════ FASE 1 — Inline SVG icons (Lucide-inspired, currentColor) ═══════
+    const ICONS = {
+        fragments: '<svg viewBox="0 0 24 24" class="icn"><rect x="2.5" y="2.5" width="7" height="7" rx="1.2"/><rect x="14.5" y="8.5" width="7" height="7" rx="1.2"/><rect x="8.5" y="14.5" width="7" height="7" rx="1.2"/></svg>',
+        'eye-off': '<svg viewBox="0 0 24 24" class="icn"><path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"/><path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"/><path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"/><line x1="2" y1="2" x2="22" y2="22"/></svg>',
+        'trending-down': '<svg viewBox="0 0 24 24" class="icn"><polyline points="22 17 13.5 8.5 8.5 13.5 2 7"/><polyline points="16 17 22 17 22 11"/></svg>',
+        scale: '<svg viewBox="0 0 24 24" class="icn"><path d="M16 16l3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1z"/><path d="M2 16l3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1z"/><path d="M7 21h10"/><path d="M12 3v18"/><path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/></svg>',
+        target: '<svg viewBox="0 0 24 24" class="icn"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>',
+        shield: '<svg viewBox="0 0 24 24" class="icn"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>',
+        'trending-up': '<svg viewBox="0 0 24 24" class="icn"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>',
+        sparkles: '<svg viewBox="0 0 24 24" class="icn"><path d="M12 3l1.6 4.4L18 9l-4.4 1.6L12 15l-1.6-4.4L6 9l4.4-1.6L12 3z"/><path d="M19 14l.7 1.9 1.9.7-1.9.7L19 19.2l-.7-1.9-1.9-.7 1.9-.7L19 14z"/></svg>',
+        pix: '<svg viewBox="0 0 24 24" class="icn"><path d="M12 2.5L21.5 12 12 21.5 2.5 12 12 2.5z"/><path d="M7.5 7.5l9 9M16.5 7.5l-9 9"/></svg>',
+        gift: '<svg viewBox="0 0 24 24" class="icn"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5A2.5 2.5 0 1 1 7.5 2C11 2 12 7 12 7z"/><path d="M12 7h4.5A2.5 2.5 0 1 0 16.5 2C13 2 12 7 12 7z"/></svg>',
+        package: '<svg viewBox="0 0 24 24" class="icn"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>',
+        receipt: '<svg viewBox="0 0 24 24" class="icn"><path d="M4 2v20l2-1.5 2 1.5 2-1.5 2 1.5 2-1.5 2 1.5 2-1.5 2 1.5V2H4z"/><line x1="8" y1="9" x2="16" y2="9"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="13" y2="17"/></svg>',
+        smartphone: '<svg viewBox="0 0 24 24" class="icn"><rect x="5" y="2" width="14" height="20" rx="2.5"/><line x1="10.5" y1="18.5" x2="13.5" y2="18.5"/></svg>',
+        'credit-card': '<svg viewBox="0 0 24 24" class="icn"><rect x="2" y="6" width="20" height="14" rx="2"/><line x1="2" y1="11" x2="22" y2="11"/><line x1="6" y1="16" x2="10" y2="16"/></svg>',
+        bank: '<svg viewBox="0 0 24 24" class="icn"><line x1="3" y1="22" x2="21" y2="22"/><line x1="6" y1="18" x2="6" y2="11"/><line x1="10" y1="18" x2="10" y2="11"/><line x1="14" y1="18" x2="14" y2="11"/><line x1="18" y1="18" x2="18" y2="11"/><polygon points="12 2 21 8 3 8"/></svg>',
+        ticket: '<svg viewBox="0 0 24 24" class="icn"><path d="M2 9a3 3 0 0 1 3-3h14a3 3 0 0 1 3 3v2a2 2 0 0 0 0 4v2a3 3 0 0 1-3 3H5a3 3 0 0 1-3-3v-2a2 2 0 0 0 0-4V9z"/><line x1="13" y1="5" x2="13" y2="19" stroke-dasharray="2 2"/></svg>',
+        'list-checks': '<svg viewBox="0 0 24 24" class="icn"><polyline points="3 7 5 9 9 5"/><line x1="12" y1="7" x2="21" y2="7"/><polyline points="3 14 5 16 9 12"/><line x1="12" y1="14" x2="21" y2="14"/><polyline points="3 21 5 23 9 19"/><line x1="12" y1="21" x2="21" y2="21"/></svg>',
+        dice: '<svg viewBox="0 0 24 24" class="icn"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8" cy="8" r="1.4" fill="currentColor" stroke="none"/><circle cx="16" cy="16" r="1.4" fill="currentColor" stroke="none"/><circle cx="16" cy="8" r="1.4" fill="currentColor" stroke="none"/><circle cx="8" cy="16" r="1.4" fill="currentColor" stroke="none"/></svg>',
+        'bar-chart': '<svg viewBox="0 0 24 24" class="icn"><line x1="6" y1="20" x2="6" y2="14"/><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/></svg>'
+    };
+    function hydrateIcons() {
+        document.querySelectorAll('[data-icon]').forEach(el => {
+            const name = el.getAttribute('data-icon');
+            if (ICONS[name]) {
+                el.innerHTML = ICONS[name];
+                el.removeAttribute('data-icon');
+            }
+        });
+    }
+    hydrateIcons();
+
+    // ═══════ FASE 1 — Chapter labels per slide (null = hide chapter label) ═══════
+    const CHAPTERS = [
+        null,                            // 0 — Cover
+        ['01', 'Problema'],              // 1
+        ['02', 'Solução'],               // 2
+        ['03', 'Como funciona'],         // 3
+        ['04', 'Impacto estratégico'],   // 4 — financial
+        ['05', 'Carteira do premiado'],  // 5
+        ['06', 'Controle'],              // 6
+        ['07', 'Mercado'],               // 7
+        ['08', 'Prova'],                 // 8
+        null                             // 9 — CTA
+    ];
+    const _topChrome   = document.getElementById('topChrome');
+    const _progressFill = document.getElementById('progressFill');
+    const _chapterNum   = document.getElementById('chapterNum');
+    const _chapterName  = document.getElementById('chapterName');
+    const _slideCur     = document.getElementById('slideCur');
+    function updateTopChrome(idx) {
+        const chap = CHAPTERS[idx];
+        if (chap) {
+            _chapterNum.textContent = chap[0];
+            _chapterName.textContent = chap[1];
+            _topChrome.classList.remove('hide-chapter');
+        } else {
+            _topChrome.classList.add('hide-chapter');
+        }
+        _slideCur.textContent = String(idx + 1).padStart(2, '0');
+        _progressFill.style.width = (((idx + 1) / TOTAL) * 100) + '%';
+    }
+    updateTopChrome(0);
+
+    // ═══════ FASE 2 — Vertical step rail sync (slide 4) ═══════
+    const _stepRail = document.getElementById('stepRail');
+    function syncStepRail(activeStep) {
+        if (!_stepRail) return;
+        // activeStep: -1 = none active, 0..2 = active node
+        const nodes = _stepRail.querySelectorAll('.step-rail-node');
+        nodes.forEach((n, i) => {
+            n.classList.toggle('active', i === activeStep);
+            n.classList.toggle('done', i < activeStep);
+        });
+        // Fill: 0 -> 0, 1 -> 0.5, 2 -> 1
+        const fill = activeStep <= 0 ? 0 : activeStep / (nodes.length - 1);
+        _stepRail.parentElement.style.setProperty('--rail-fill', fill);
+    }
+
+    const presentation = document.getElementById('presentation');
+    const dots = document.querySelectorAll('.dot');
+    const slides = document.querySelectorAll('.slide');
+
+    // Slides with sequential (spacebar-triggered) card animations
+    const seqSlides = new Set([1, 2, 3, 7]);
+
+    // ── Feature carousel (wallet slide, index 5) ──────────────
+    const CAROUSEL_SLIDE_IDX = 5;
+    const carouselSlides = document.querySelectorAll('#feature-carousel .feature-slide');
+    const carouselDots   = document.querySelectorAll('#feature-carousel .c-dot');
+    const carouselLabel  = document.getElementById('carousel-label');
+    const carouselNames  = ['PIX', 'Pagamentos', 'Resgate de Prêmios'];
+    let carouselIdx      = 0;
+    let carouselTimer    = null;
+
+    function setCarouselSlide(idx) {
+        carouselSlides[carouselIdx].classList.remove('active');
+        carouselDots[carouselIdx].classList.remove('active');
+        carouselIdx = ((idx % carouselSlides.length) + carouselSlides.length) % carouselSlides.length;
+        carouselSlides[carouselIdx].classList.add('active');
+        carouselDots[carouselIdx].classList.add('active');
+        if (carouselLabel) carouselLabel.textContent = carouselNames[carouselIdx];
+    }
+
+    function startCarousel() {
+        if (carouselTimer) return;
+        carouselTimer = setInterval(() => setCarouselSlide(carouselIdx + 1), 3000);
+    }
+
+    function stopCarousel() {
+        clearInterval(carouselTimer);
+        carouselTimer = null;
+    }
+
+    carouselDots.forEach(dot => {
+        dot.addEventListener('click', e => {
+            e.stopPropagation();
+            setCarouselSlide(parseInt(dot.dataset.cidx));
+            stopCarousel();
+            setTimeout(startCarousel, 4000);
+        });
+    });
+
+    function resetMarketNumbers(scope) {
+        scope.querySelectorAll('.market-number[data-target]').forEach(el => {
+            const prefix = el.dataset.prefix || '';
+            const suffix = el.dataset.suffix || '';
+            el.textContent = `${prefix}0${suffix}`;
+            el.dataset.animated = 'false';
+        });
+    }
+
+    function animateMarketNumber(el) {
+        if (el.dataset.animated === 'true') return;
+        const target = parseInt(el.dataset.target || '0', 10);
+        if (Number.isNaN(target)) return;
+
+        const prefix = el.dataset.prefix || '';
+        const suffix = el.dataset.suffix || '';
+        const duration = 700;
+        const start = performance.now();
+        el.dataset.animated = 'true';
+
+        const frame = now => {
+            const progress = Math.min((now - start) / duration, 1);
+            const value = Math.round(target * progress);
+            el.textContent = `${prefix}${value}${suffix}`;
+            if (progress < 1) {
+                requestAnimationFrame(frame);
+            }
+        };
+
+        requestAnimationFrame(frame);
+    }
+
+    function runElementEffects(el) {
+        el.querySelectorAll('.market-number[data-target]').forEach(animateMarketNumber);
+    }
+
+    // ── Gather sequential elements per slide ──
+    const seqElements = {};
+    slides.forEach((slide, i) => {
+        const els = slide.querySelectorAll('.seq-el');
+        if (els.length > 0) {
+            seqElements[i] = Array.from(els);
+        }
+        animationStep[i] = 0;
+    });
+
+    // ── Initialize: show fade-el on non-seq slides immediately when active ──
+    function initSlide(idx) {
+        const slide = slides[idx];
+
+        // Trigger fade-el animations
+        const fadeEls = slide.querySelectorAll('.fade-el');
+        setTimeout(() => {
+            fadeEls.forEach(el => el.classList.add('visible'));
+        }, 80);
+
+        resetMarketNumbers(slide);
+
+        // For non-seq slides, auto-show seq-el too (shouldn't exist, but safety)
+        if (!seqSlides.has(idx)) {
+            const sEls = slide.querySelectorAll('.seq-el');
+            sEls.forEach(el => el.classList.add('animate-in'));
+        }
+
+        // Reset seq step
+        animationStep[idx] = 0;
+
+        // Step-showcase: auto-trigger step 0 on entry so the rail + first panel
+        // are immediately visible (otherwise the slide looks empty until spacebar).
+        if (slide.classList.contains('step-showcase-slide')) {
+            const sEls = seqElements[idx] || [];
+            syncStepRail(-1);
+            if (sEls.length > 0) {
+                setTimeout(() => {
+                    sEls[0].classList.add('animate-in');
+                    syncStepRail(0);
+                    animationStep[idx] = 1;
+                }, 500);
+            }
+        }
+    }
+
+    // ── Mobile detection ──
+    const MOBILE_BP = 768;
+    function isMobile() { return window.innerWidth <= MOBILE_BP; }
+
+    // ── Navigate to a slide (desktop only) ──
+    function goTo(idx) {
+        if (isMobile()) return;
+        if (idx < 0 || idx >= TOTAL) return;
+
+        stopCarousel();
+
+        const oldSlide = slides[currentSlide];
+        oldSlide.querySelectorAll('.fade-el').forEach(el => el.classList.remove('visible'));
+        if (seqSlides.has(currentSlide)) {
+            oldSlide.querySelectorAll('.seq-el').forEach(el => {
+                el.classList.remove('animate-in');
+                el.classList.remove('animate-out');
+            });
+            animationStep[currentSlide] = 0;
+        }
+        resetMarketNumbers(oldSlide);
+
+        currentSlide = idx;
+        presentation.style.transform = `translateX(-${currentSlide * 100}vw)`;
+        dots.forEach((d, i) => d.classList.toggle('active', i === currentSlide));
+        updateTopChrome(currentSlide);
+        setTimeout(() => {
+            initSlide(currentSlide);
+            if (currentSlide === CAROUSEL_SLIDE_IDX) startCarousel();
+        }, 100);
+    }
+
+    // ── Next action (desktop only) ──
+    function nextAction() {
+        if (isMobile()) return;
+        if (seqSlides.has(currentSlide)) {
+            const els = seqElements[currentSlide];
+            const step = animationStep[currentSlide];
+            if (step < els.length) {
+                const slide = slides[currentSlide];
+                if (slide.classList.contains('step-showcase-slide') && step > 0) {
+                    els[step - 1].classList.remove('animate-in');
+                    els[step - 1].classList.add('animate-out');
+                }
+                els[step].classList.add('animate-in');
+                if (slide.classList.contains('step-showcase-slide')) {
+                    syncStepRail(step);
+                }
+                runElementEffects(els[step]);
+                animationStep[currentSlide]++;
+                return;
+            }
+        }
+        goTo(currentSlide + 1);
+    }
+
+    // ── Previous action (desktop): step within seq slides BEFORE moving back ──
+    function prevAction() {
+        if (isMobile()) return;
+        if (seqSlides.has(currentSlide)) {
+            const step = animationStep[currentSlide];
+            const slide = slides[currentSlide];
+            const isShowcase = slide.classList.contains('step-showcase-slide');
+            // Showcase slides auto-show step 0 on entry (animationStep starts at 1),
+            // so step 1 is the natural resting state — back from there leaves the slide.
+            const minStep = isShowcase ? 2 : 1;
+            if (step >= minStep) {
+                const els = seqElements[currentSlide];
+                const newStep = step - 1;
+                animationStep[currentSlide] = newStep;
+                if (isShowcase) {
+                    // Hide current panel, restore the previous one
+                    els[newStep].classList.remove('animate-in');
+                    els[newStep].classList.add('animate-out');
+                    els[newStep - 1].classList.remove('animate-out');
+                    els[newStep - 1].classList.add('animate-in');
+                    syncStepRail(newStep - 1);
+                } else {
+                    els[newStep].classList.remove('animate-in');
+                }
+                return;
+            }
+        }
+        goTo(currentSlide - 1);
+    }
+
+    // ── Keyboard (desktop) ──
+    document.addEventListener('keydown', e => {
+        if (isMobile()) return;
+        if (e.key === 'ArrowRight' || e.key === ' ') {
+            e.preventDefault();
+            nextAction();
+        } else if (e.key === 'ArrowLeft') {
+            e.preventDefault();
+            prevAction();
+        }
+    });
+
+    // ═══════ FASE 3 — Slide 6: dashboard markers ↔ check-items hover sync ═══════
+    (function bindDashMarkers() {
+        const items = document.querySelectorAll('#slide-5 .check-item[data-target]');
+        const markers = document.querySelectorAll('#slide-5 .dash-marker[data-num]');
+        function setActive(num) {
+            items.forEach(it => it.classList.toggle('is-active', it.dataset.target === num));
+            markers.forEach(m => m.classList.toggle('is-active', m.dataset.num === num));
+        }
+        function clearActive() {
+            items.forEach(it => it.classList.remove('is-active'));
+            markers.forEach(m => m.classList.remove('is-active'));
+        }
+        items.forEach(it => {
+            it.addEventListener('mouseenter', () => setActive(it.dataset.target));
+            it.addEventListener('mouseleave', clearActive);
+        });
+        markers.forEach(m => {
+            m.addEventListener('mouseenter', () => setActive(m.dataset.num));
+            m.addEventListener('mouseleave', clearActive);
+        });
+    })();
+
+    // ═══════ Email anti-Cloudflare-obfuscation (montado em runtime) ═══════
+    (function buildEmail() {
+        const el = document.getElementById('ctaEmail');
+        if (!el) return;
+        const u = el.dataset.u, d = el.dataset.d;
+        const addr = u + String.fromCharCode(64) + d;
+        el.textContent = addr;
+        el.setAttribute('href', 'mailto:' + addr);
+        el.removeAttribute('data-u');
+        el.removeAttribute('data-d');
+    })();
+
+    // ═══════ FASE 4 — Chatbot launcher: bot embed was blocked, now a clickable card. (placeholder) ═══════
+
+    // ═══════ FASE 4 — Modo Apresentar (fullscreen + letterbox 16:9) ═══════
+    (function bindPresentMode() {
+        const btn = document.getElementById('presentToggle');
+        const label = document.getElementById('presentLabel');
+        if (!btn) return;
+        function isPresenting() { return document.body.classList.contains('is-presenting'); }
+        function enterPresent() {
+            const el = document.documentElement;
+            const req = el.requestFullscreen || el.webkitRequestFullscreen || el.msRequestFullscreen;
+            if (req) {
+                req.call(el).then(() => {
+                    document.body.classList.add('is-presenting');
+                    label.textContent = 'Sair (Esc)';
+                }).catch(() => {
+                    // Don't activate is-presenting if fullscreen was denied —
+                    // letterbox bars only make sense in real fullscreen.
+                    label.textContent = 'Apresentar';
+                });
+            }
+        }
+        function exitPresent() {
+            document.body.classList.remove('is-presenting');
+            label.textContent = 'Apresentar';
+            if (document.fullscreenElement || document.webkitFullscreenElement) {
+                const exit = document.exitFullscreen || document.webkitExitFullscreen || document.msExitFullscreen;
+                if (exit) exit.call(document).catch(() => {});
+            }
+        }
+        function toggle() { isPresenting() ? exitPresent() : enterPresent(); }
+        btn.addEventListener('click', e => { e.stopPropagation(); toggle(); });
+        // Keep class in sync if user exits fullscreen via Esc/browser UI
+        ['fullscreenchange', 'webkitfullscreenchange'].forEach(evt => {
+            document.addEventListener(evt, () => {
+                if (!document.fullscreenElement && !document.webkitFullscreenElement) {
+                    document.body.classList.remove('is-presenting');
+                    label.textContent = 'Apresentar';
+                }
+            });
+        });
+    })();
+
+    // ── Click navigation (desktop, X-based) ──
+    document.addEventListener('click', e => {
+        if (isMobile()) return;
+        if (e.target.closest('.slide-indicator') || e.target.closest('.cta-btn') || e.target.closest('.carousel-dots-strip')) return;
+        if (e.target.closest('.dash-marker') || e.target.closest('.check-item') || e.target.closest('.step-rail-node')) return;
+        if (e.target.closest('.present-toggle') || e.target.closest('.cta-bot-launcher') || e.target.closest('.cta-card-outline')) return;
+        if (e.clientX > window.innerWidth / 2) {
+            nextAction();
+        } else {
+            prevAction();
+        }
+    });
+
+    // ── Dot navigation (desktop) ──
+    dots.forEach(dot => {
+        dot.addEventListener('click', e => {
+            if (isMobile()) return;
+            e.stopPropagation();
+            goTo(parseInt(dot.dataset.idx));
+        });
+    });
+
+    // ── Resize: mantém transform correto ao girar tela ──
+    window.addEventListener('resize', () => {
+        if (isMobile()) {
+            presentation.style.transform = 'none';
+            return;
+        }
+        presentation.style.transition = 'none';
+        presentation.style.transform = `translateX(-${currentSlide * 100}vw)`;
+        setTimeout(() => { presentation.style.transition = ''; }, 60);
+    });
+
+    // ── Mobile: exibir todo conteúdo de uma vez ──
+    function initMobile() {
+        presentation.style.transform = 'none';
+        presentation.style.transition = 'none';
+
+        // Auto-cycle carousel when wallet slide scrolls into view on mobile
+        const walletSlide = document.getElementById('slide-4');
+        if (walletSlide) {
+            const carouselMobileObs = new IntersectionObserver(entries => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) startCarousel();
+                    else stopCarousel();
+                });
+            }, { threshold: 0.4 });
+            carouselMobileObs.observe(walletSlide);
+        }
+
+        // Revelar todos os elementos animados imediatamente
+        slides.forEach(slide => {
+            slide.querySelectorAll('.fade-el').forEach(el => el.classList.add('visible'));
+            slide.querySelectorAll('.seq-el').forEach(el => {
+                el.classList.remove('animate-out');
+                el.classList.add('animate-in');
+            });
+        });
+
+        // Dados de mercado: animar ao rolar até a seção (IntersectionObserver)
+        const obs = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (!entry.isIntersecting) return;
+                const card = entry.target;
+
+                // Animar número contando do zero
+                card.querySelectorAll('.market-number[data-target]').forEach(animateMarketNumber);
+
+                // Expandir barra de progresso
+                card.querySelectorAll('.market-meter-fill').forEach(fill => {
+                    fill.style.width = card.style.getPropertyValue('--market-fill') || '0%';
+                });
+
+                obs.unobserve(card);
+            });
+        }, { threshold: 0.45 });
+
+        // Garantir que os números começam em 0 antes de observar
+        document.querySelectorAll('.market-card').forEach(card => {
+            card.querySelectorAll('.market-number[data-target]').forEach(el => {
+                const prefix = el.dataset.prefix || '';
+                const suffix = el.dataset.suffix || '';
+                el.textContent = `${prefix}0${suffix}`;
+                el.dataset.animated = 'false';
+            });
+            obs.observe(card);
+        });
+    }
+
+    // ── Init ──
+    if (isMobile()) {
+        initMobile();
+    } else {
+        initSlide(0);
+    }
+</script>
+</body>
+</html>
+
